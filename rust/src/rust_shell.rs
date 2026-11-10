@@ -13,9 +13,9 @@ use crate::api::dart_types::MapSize;
 static GPU_TEXTURES: OnceLock<GpuTextures> = OnceLock::new();
 static MAIN_THREAD_DISPATCHER: OnceLock<MainThreadDispatcher> = OnceLock::new();
 
-struct GalileoRustShellPlugin;
+struct MapLibreRustShellPlugin;
 
-impl FlutterRustPlugin for GalileoRustShellPlugin {
+impl FlutterRustPlugin for MapLibreRustShellPlugin {
     fn register(&self, registrar: &mut PluginRegistrar) -> Result<(), PluginError> {
         let textures = registrar.gpu()?.clone();
         GPU_TEXTURES
@@ -29,7 +29,7 @@ impl FlutterRustPlugin for GalileoRustShellPlugin {
 }
 
 pub fn register_application(registrar: &mut PluginRegistrar) -> Result<(), PluginError> {
-    GalileoRustShellPlugin.register(registrar)
+    MapLibreRustShellPlugin.register(registrar)
 }
 
 pub(crate) fn create_wgpu_texture(size: MapSize) -> anyhow::Result<(WgpuTexture, i64)> {
