@@ -30,7 +30,7 @@ MapLibre Flutter is a Flutter FFI plugin backed by MapLibre Native. Dart widgets
 - Run the example on desktop using the Rust shell tooling; web is not supported by the native renderer.
 
 ## Naming
-Use `maplibre_flutter` for package and native artifact names, `MapLibre` for public Dart types, and `maplibre_api` for the bridge module. The standalone fork exposes only the MapLibre API, documented in `MIGRATION.md`.
+Use `maplibre_flutter` for package and native artifact names, `MapLibre` for public Dart types, and `maplibre_api` for the bridge module. The standalone fork exposes only the MapLibre API.
 
 Use the internal `rlutter` toolchain: `rlutter dart ...` for Dart commands and `rlutter run` for the example.
 

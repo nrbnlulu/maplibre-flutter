@@ -10,7 +10,6 @@ Pod::Spec.new do |s|
 A new Flutter FFI plugin project.
                        DESC
   s.homepage         = 'http://example.com'
-  s.license          = { :file => '../LICENSE' }
   s.author           = { 'Your Company' => 'email@example.com' }
 
   # This will ensure the source files in Classes/ are included in the native

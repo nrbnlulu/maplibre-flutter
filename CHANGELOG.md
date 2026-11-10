@@ -1,10 +1,8 @@
 ## Unreleased
 
-- Rename the package and native artifacts to `maplibre_flutter`.
+- Use `maplibre_flutter` for the package and native artifacts.
 - Expose MapLibre-prefixed Dart APIs for the standalone fork.
-- Rename the internal bridge module to `maplibre_api`.
-- Remove compatibility aliases, forwarding imports, and obsolete engine-specific tests.
-- See MIGRATION.md for the public package API.
+- Expose the internal bridge module as `maplibre_api`.
 
 ## 0.0.1
 
