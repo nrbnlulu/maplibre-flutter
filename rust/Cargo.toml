@@ -6,6 +6,10 @@ edition = "2021"
 [lib]
 crate-type = ["cdylib", "rlib", "staticlib"]
 
+[features]
+default = ["standalone-frb"]
+standalone-frb = []
+
 [dependencies]
 flutter_rust_bridge = "=2.13.0"
 flutter-plugin-sdk = "0.1.0"
