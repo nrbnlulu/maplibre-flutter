@@ -53,7 +53,7 @@ impl MapSession {
         let thread = MapThread::spawn(
             MapThreadConfig {
                 center: config.latlon,
-                // Galileo z-levels address 256px tiles, MapLibre zoom 512px tiles.
+                // Convert API zoom levels based on 256px tiles to MapLibre 512px tiles.
                 zoom: (f64::from(config.zoom_level) - 1.0).max(0.0),
                 size: config.map_size,
                 background: config.background_color,
