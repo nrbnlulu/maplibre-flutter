@@ -96,6 +96,7 @@ tasks:
         cmds:
             - rm -rf .dart_tool
             - flutter_rust_bridge_codegen generate
+            - python3 tool/namespace-frb.py
 
     # --- Combined tasks ---
     fix:

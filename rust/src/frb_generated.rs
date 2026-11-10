@@ -2628,7 +2628,7 @@ mod io {
 
     // Section: boilerplate
 
-    flutter_rust_bridge::frb_generated_boilerplate_io!();
+    include!("frb_namespaced_io.rs");
 }
 #[cfg(not(target_family = "wasm"))]
 pub use io::*;

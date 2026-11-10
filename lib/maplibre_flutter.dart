@@ -52,7 +52,7 @@ bool _isRustShell() {
   }
   try {
     return ffi.DynamicLibrary.process().providesSymbol(
-      'frb_get_rust_content_hash',
+      'maplibre_flutter_frb_get_rust_content_hash',
     );
   } catch (_) {
     return false;
