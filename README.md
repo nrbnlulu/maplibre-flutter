@@ -8,7 +8,7 @@ import 'package:maplibre_flutter/maplibre_flutter.dart';
 await initMapLibre();
 ```
 
-The public map APIs are `MapLibreMapWidget`, `MapLibreMapController`, `MapLibreMapState`, and `MapLibreColor`. See the example app for configuration and overlays, and [MIGRATION.md](MIGRATION.md) for migration from the previous package name.
+The public map APIs are `MapLibreMapWidget`, `MapLibreMapController`, `MapLibreMapState`, and `MapLibreColor`. See the example app for configuration and overlays, and [MIGRATION.md](MIGRATION.md) for the public package API.
 
 ## Architecture
 
