@@ -9,9 +9,9 @@ import 'package:galileo_flutter/src/map/controller.dart';
 import 'package:galileo_flutter/src/rust/api/dart_types.dart';
 import 'package:galileo_flutter/src/layer/overlay/overlay.dart';
 
-final _log = Logger('GalileoMapWidget');
+final _log = Logger('MapLibreMapWidget');
 
-/// A widget that displays a Galileo map with interactive controls
+/// A widget that displays a MapLibre map with interactive controls
 /// Degrees of rotation per physical pixel of a secondary-button mouse drag.
 const double _kRotateDegreesPerPixel = 0.5;
 
@@ -33,8 +33,8 @@ const double _kRotationDeadband = 0.12;
 
 enum _TwoFingerMode { undecided, tilt, transform }
 
-class GalileoMapWidget extends StatefulWidget {
-  final GalileoMapController controller;
+class MapLibreMapWidget extends StatefulWidget {
+  final MapLibreMapController controller;
 
   final MapInitConfig config;
 
@@ -57,7 +57,7 @@ class GalileoMapWidget extends StatefulWidget {
   /// Fires at most once per 30 ms to avoid flooding the Rust FFI layer.
   final void Function(MapViewport viewport)? onViewportChanged;
 
-  const GalileoMapWidget._({
+  const MapLibreMapWidget._({
     super.key,
     required this.controller,
     required this.config,
@@ -70,10 +70,10 @@ class GalileoMapWidget extends StatefulWidget {
     this.onViewportChanged,
   });
 
-  /// Create a GalileoMapWidget from an existing controller
-  factory GalileoMapWidget.fromController({
+  /// Create a MapLibreMapWidget from an existing controller
+  factory MapLibreMapWidget.fromController({
     Key? key,
-    required GalileoMapController controller,
+    required MapLibreMapController controller,
     required MapInitConfig config,
     List<LayerConfig> layers = const [LayerConfig.osm()],
     bool autoDispose = true,
@@ -83,7 +83,7 @@ class GalileoMapWidget extends StatefulWidget {
     void Function(double x, double y)? onTap,
     void Function(MapViewport viewport)? onViewportChanged,
   }) {
-    return GalileoMapWidget._(
+    return MapLibreMapWidget._(
       key: key,
       controller: controller,
       autoDispose: autoDispose,
@@ -97,7 +97,7 @@ class GalileoMapWidget extends StatefulWidget {
     );
   }
 
-  /// Create a GalileoMapWidget with configuration
+  /// Create a MapLibreMapWidget with configuration
   static Widget fromConfig({
     Key? key,
     required MapSize size,
@@ -110,7 +110,7 @@ class GalileoMapWidget extends StatefulWidget {
     void Function(double x, double y)? onTap,
     void Function(MapViewport viewport)? onViewportChanged,
   }) {
-    return _GalileoMapFromConfig(
+    return _MapLibreMapFromConfig(
       key: key,
       size: size,
       config: config,
@@ -125,12 +125,12 @@ class GalileoMapWidget extends StatefulWidget {
   }
 
   @override
-  State<GalileoMapWidget> createState() => _GalileoMapWidgetState();
+  State<MapLibreMapWidget> createState() => _MapLibreMapWidgetState();
 }
 
-class _GalileoMapWidgetState extends State<GalileoMapWidget> {
-  GalileoMapState? currentState;
-  StreamSubscription<GalileoMapState>? streamSubscription;
+class _MapLibreMapWidgetState extends State<MapLibreMapWidget> {
+  MapLibreMapState? currentState;
+  StreamSubscription<MapLibreMapState>? streamSubscription;
   StreamSubscription<MapViewport>? viewportSubscription;
   late FocusNode _focusNode;
   final Set<LogicalKeyboardKey> _pressedKeys = {};
@@ -654,13 +654,13 @@ class _GalileoMapWidgetState extends State<GalileoMapWidget> {
     }
 
     switch (currentState!) {
-      case GalileoMapState.initializing:
-        return _buildLoadingWidget('Initializing Galileo map...');
+      case MapLibreMapState.initializing:
+        return _buildLoadingWidget('Initializing MapLibre map...');
 
-      case GalileoMapState.error:
+      case MapLibreMapState.error:
         return _buildErrorWidget('Map encountered an error');
 
-      case GalileoMapState.ready:
+      case MapLibreMapState.ready:
         final textureId = widget.controller.textureId;
         if (textureId != null) {
           // Future.microtask(() async => await widget.controller.requestRedraw());
@@ -669,7 +669,7 @@ class _GalileoMapWidgetState extends State<GalileoMapWidget> {
           return _buildLoadingWidget('Preparing texture...');
         }
 
-      case GalileoMapState.stopped:
+      case MapLibreMapState.stopped:
         return const Center(
           child: Text('Map stopped', style: TextStyle(fontSize: 16)),
         );
@@ -694,11 +694,11 @@ class _GalileoMapWidgetState extends State<GalileoMapWidget> {
       if (widget.autoDispose) {
         try {
           _log.info(
-            'Disposing Galileo map controller (${widget.controller.sessionId})',
+            'Disposing MapLibre map controller (${widget.controller.sessionId})',
           );
           await widget.controller.dispose();
         } catch (e) {
-          _log.severe('Error disposing Galileo map controller', e);
+          _log.severe('Error disposing MapLibre map controller', e);
         }
       }
     });
@@ -709,7 +709,7 @@ class _GalileoMapWidgetState extends State<GalileoMapWidget> {
   }
 }
 
-class _GalileoMapFromConfig extends StatefulWidget {
+class _MapLibreMapFromConfig extends StatefulWidget {
   final MapSize size;
   final MapInitConfig config;
   final List<LayerConfig> layers;
@@ -722,7 +722,7 @@ class _GalileoMapFromConfig extends StatefulWidget {
   /// Called when the map is tapped
   final void Function(MapViewport viewport)? onViewportChanged;
 
-  const _GalileoMapFromConfig({
+  const _MapLibreMapFromConfig({
     super.key,
     required this.size,
     required this.config,
@@ -736,16 +736,16 @@ class _GalileoMapFromConfig extends StatefulWidget {
   });
 
   @override
-  State<_GalileoMapFromConfig> createState() => _GalileoMapFromConfigState();
+  State<_MapLibreMapFromConfig> createState() => _MapLibreMapFromConfigState();
 }
 
-class _GalileoMapFromConfigState extends State<_GalileoMapFromConfig> {
-  late final Future<(GalileoMapController?, String?)> _controllerFuture;
+class _MapLibreMapFromConfigState extends State<_MapLibreMapFromConfig> {
+  late final Future<(MapLibreMapController?, String?)> _controllerFuture;
 
   @override
   void initState() {
     super.initState();
-    _controllerFuture = GalileoMapController.create(
+    _controllerFuture = MapLibreMapController.create(
       size: widget.size,
       config: widget.config,
       layers: widget.layers,
@@ -780,7 +780,7 @@ class _GalileoMapFromConfigState extends State<_GalileoMapFromConfig> {
           );
         }
 
-        return GalileoMapWidget._(
+        return MapLibreMapWidget._(
           controller: controller!,
           config: widget.config,
           layers: widget.layers,

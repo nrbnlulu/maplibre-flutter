@@ -7,7 +7,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart'
     show ExternalLibrary;
 import 'package:path_provider/path_provider.dart';
 
-export 'package:galileo_flutter/src/map/widget.dart' show GalileoMapWidget;
+export 'package:galileo_flutter/src/map/widget.dart' show MapLibreMapWidget;
 
 import 'src/rust/api/maplibre_api.dart' as rlib;
 import 'src/rust/frb_generated.dart' as rlib_gen;
@@ -59,7 +59,7 @@ bool _isRustShell() {
   }
 }
 
-Future<void> initGalileo({String? cachePath}) async {
+Future<void> initMapLibre({String? cachePath}) async {
   final isRustShell = _isRustShell();
   await rlib_gen.RustLib.init(
     externalLibrary: isRustShell
@@ -80,3 +80,17 @@ Future<void> initGalileo({String? cachePath}) async {
 
   await rlib.setTileCachePath(path: tileCachePath);
 }
+
+// Compatibility names for consumers migrating to the MapLibre API.
+@Deprecated('Use initMapLibre instead')
+Future<void> initGalileo({String? cachePath}) =>
+    initMapLibre(cachePath: cachePath);
+
+@Deprecated('Use MapLibreMapWidget instead')
+typedef GalileoMapWidget = MapLibreMapWidget;
+@Deprecated('Use MapLibreMapController instead')
+typedef GalileoMapController = MapLibreMapController;
+@Deprecated('Use MapLibreMapState instead')
+typedef GalileoMapState = MapLibreMapState;
+@Deprecated('Use MapLibreColor instead')
+typedef GalileoColor = MapLibreColor;

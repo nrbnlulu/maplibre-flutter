@@ -4,13 +4,19 @@ import 'package:galileo_flutter/galileo_flutter.dart';
 import 'package:latlong2/latlong.dart';
 
 extension MapLibreColorExt on ui.Color {
-  MapLibreColor toGalileo() {
+  @Deprecated('Use toMapLibre instead')
+  MapLibreColor toGalileo() => toMapLibre();
+
+  MapLibreColor toMapLibre() {
     return MapLibreColor(r: r, g: g, b: b, a: a);
   }
 }
 
-extension GalileoCoordinateExt on LatLng {
-  GeoLocation toGalileo() {
+extension MapLibreCoordinateExt on LatLng {
+  @Deprecated('Use toMapLibre instead')
+  GeoLocation toGalileo() => toMapLibre();
+
+  GeoLocation toMapLibre() {
     return GeoLocation(latitude: latitude, longitude: longitude);
   }
 }

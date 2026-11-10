@@ -110,7 +110,7 @@ class PointClusterController extends ChangeNotifier {
     PointerUpEvent event,
     Size mapSize,
     MapViewport vp,
-    GalileoMapController mapController,
+    MapLibreMapController mapController,
     double devicePixelRatio,
     void Function(PointCluster)? onClusterTap,
   ) async {
@@ -192,7 +192,7 @@ class PointClusterController extends ChangeNotifier {
   /// the same zoom-around-point mechanism as the built-in +/- keyboard
   /// shortcuts, so the cluster's member points spread apart on screen.
   Future<void> zoomToCluster(
-    GalileoMapController controller,
+    MapLibreMapController controller,
     PointCluster cluster, {
     double devicePixelRatio = 1.0,
     double zoomFactor = 0.55,

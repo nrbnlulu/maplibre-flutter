@@ -182,8 +182,8 @@ class PolygonEditController extends FeatureEditController {
     final updated = Polygon(
       points: List.from(_editingVertices),
       style: PolygonStyle(
-        fillColor: Color(0x338FE6CC).toGalileo(),
-        strokeColor: Color(0xFFFFFFFF).toGalileo(),
+        fillColor: Color(0x338FE6CC).toMapLibre(),
+        strokeColor: Color(0xFFFFFFFF).toMapLibre(),
         strokeWidth: 2.0,
         strokeOffset: 0.0,
       ),

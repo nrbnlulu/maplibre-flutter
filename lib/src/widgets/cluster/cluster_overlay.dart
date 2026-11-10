@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:galileo_flutter/galileo_flutter.dart';
 
 /// Builds the widget shown for a single [PointCluster] bubble.
-typedef ClusterBubbleBuilder = Widget Function(
-  BuildContext context,
-  PointCluster cluster,
-);
+typedef ClusterBubbleBuilder =
+    Widget Function(BuildContext context, PointCluster cluster);
 
 /// Renders the clusters computed by a [PointClusterController] as tappable
 /// bubbles positioned over the map, zooming in around a cluster when tapped.
 ///
 /// Place this as a child in a [Stack] that covers the map area, alongside
-/// [GalileoMapWidget].
+/// [MapLibreMapWidget].
 class ClusterOverlay extends StatelessWidget {
   const ClusterOverlay({
     super.key,
@@ -26,7 +24,7 @@ class ClusterOverlay extends StatelessWidget {
 
   /// Map whose viewport drives cluster placement, and that gets zoomed in
   /// when a cluster bubble is tapped.
-  final GalileoMapController mapController;
+  final MapLibreMapController mapController;
 
   /// Customizes how a cluster bubble is rendered. Defaults to
   /// [defaultBubbleBuilder].

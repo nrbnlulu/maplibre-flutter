@@ -18,7 +18,7 @@ const MAPBOX_SATELLITE_URL_TEMPLATE =
 
 const _kMapSize = MapSize(width: 800, height: 600);
 final _kMapConfig = MapInitConfig(
-  backgroundColor: Color(0x1A1A0080).toGalileo(),
+  backgroundColor: Color(0x1A1A0080).toMapLibre(),
   enableMultisampling: true,
   latlon: GeoLocation(latitude: 0.0, longitude: 0.0),
   mapSize: _kMapSize,
@@ -36,7 +36,7 @@ Future<void> main() async {
     }
     FlutterError.dumpErrorToConsole(details);
   };
-  await initGalileo();
+  await initMapLibre();
   runApp(const MyApp());
 }
 
@@ -45,25 +45,25 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Galileo Flutter Demo',
+      title: 'MapLibre Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const GalileoMapPage(),
+      home: const MapLibreMapPage(),
     );
   }
 }
 
-class GalileoMapPage extends StatefulWidget {
-  const GalileoMapPage({super.key});
+class MapLibreMapPage extends StatefulWidget {
+  const MapLibreMapPage({super.key});
   @override
-  State<GalileoMapPage> createState() => _GalileoMapPageState();
+  State<MapLibreMapPage> createState() => _MapLibreMapPageState();
 }
 
-class _GalileoMapPageState extends State<GalileoMapPage> {
+class _MapLibreMapPageState extends State<MapLibreMapPage> {
   String _statusMessage = 'Loading...';
   String _layerConfigString = 'osm_tile_layer';
 
-  GalileoMapController? _controller;
-  late Future<(GalileoMapController?, String?)> _controllerFuture;
+  MapLibreMapController? _controller;
+  late Future<(MapLibreMapController?, String?)> _controllerFuture;
 
   FeatureLayerManager? _features;
   bool _layerReady = false;
@@ -90,7 +90,7 @@ class _GalileoMapPageState extends State<GalileoMapPage> {
   @override
   void initState() {
     super.initState();
-    _controllerFuture = GalileoMapController.create(
+    _controllerFuture = MapLibreMapController.create(
       size: _kMapSize,
       config: _kMapConfig,
       layers: [LayerConfig.osm()],
@@ -128,7 +128,7 @@ class _GalileoMapPageState extends State<GalileoMapPage> {
     _features?.dispose();
     _features = null;
 
-    final f = GalileoMapController.create(
+    final f = MapLibreMapController.create(
       size: _kMapSize,
       config: _kMapConfig,
       layers: [newLayer],
@@ -146,7 +146,7 @@ class _GalileoMapPageState extends State<GalileoMapPage> {
     await _initManagedLayer(ctrl);
   }
 
-  Future<void> _initManagedLayer(GalileoMapController ctrl) async {
+  Future<void> _initManagedLayer(MapLibreMapController ctrl) async {
     setState(() => _controller = ctrl);
 
     final manager = FeatureLayerManager(
@@ -248,7 +248,7 @@ class _GalileoMapPageState extends State<GalileoMapPage> {
   Future<void> _addPoint(FeatureLayerManager features, GeoLocation loc) async {
     final point = Point(
       coordinate: loc,
-      style: PointStyle(fillColor: Color(0xFF0000FF).toGalileo(), size: 8.0),
+      style: PointStyle(fillColor: Color(0xFF0000FF).toMapLibre(), size: 8.0),
     );
     await features.addPoint(point);
     if (mounted) {
@@ -329,7 +329,7 @@ class _GalileoMapPageState extends State<GalileoMapPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Galileo Flutter Demo'),
+        title: const Text('MapLibre Flutter Demo'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: Column(
@@ -525,9 +525,9 @@ class _GalileoMapPageState extends State<GalileoMapPage> {
                               await _polygonDrawer.finish(
                                 PolygonStyle(
                                   fillColor:
-                                      const Color(0x338FE6CC).toGalileo(),
+                                      const Color(0x338FE6CC).toMapLibre(),
                                   strokeColor:
-                                      const Color(0xFFFFFFFF).toGalileo(),
+                                      const Color(0xFFFFFFFF).toMapLibre(),
                                   strokeWidth: 2.0,
                                   strokeOffset: 0.0,
                                 ),
@@ -580,7 +580,7 @@ class _GalileoMapPageState extends State<GalileoMapPage> {
                             _pointerDownPosition = null;
                           },
                           onPointerCancel: (_) => _pointerDownPosition = null,
-                          child: GalileoMapWidget.fromController(
+                          child: MapLibreMapWidget.fromController(
                             key: ObjectKey(controller),
                             controller: controller!,
                             config: _kMapConfig,
@@ -782,7 +782,7 @@ class _GalileoMapPageState extends State<GalileoMapPage> {
                   (context) => AlertDialog(
                     title: const Text('About'),
                     content: Text(
-                      'Galileo Flutter Demo\n'
+                      'MapLibre Flutter Demo\n'
                       'Session ID: ${_controller?.sessionId ?? "none"}\n'
                       'Points on map: ${features?.pointCount ?? 0}\n'
                       'Polygons on map: ${features?.polygonCount ?? 0}',

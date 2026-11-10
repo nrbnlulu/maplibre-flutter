@@ -4,7 +4,7 @@ import 'package:galileo_flutter/galileo_flutter.dart';
 /// Positions a child widget on the map at a given lat/lon coordinate.
 ///
 /// Pushed into [LayerController] via [LayerController.addOverlay].
-/// [MapOverlayLayer] inside [GalileoMapWidget] reads the list and
+/// [MapOverlayLayer] inside [MapLibreMapWidget] reads the list and
 /// repositions each overlay whenever the viewport changes.
 class OverlayWidget extends StatelessWidget {
   final GeoLocation loc;

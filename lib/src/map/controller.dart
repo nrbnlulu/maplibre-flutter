@@ -8,10 +8,10 @@ import 'package:logging/logging.dart';
 
 import "package:rxdart/rxdart.dart" as rx;
 
-final _log = Logger('GalileoMapController');
+final _log = Logger('MapLibreMapController');
 
-/// State of a Galileo map instance
-enum GalileoMapState {
+/// State of a MapLibre map instance
+enum MapLibreMapState {
   /// Map is being initialized
   initializing,
 
@@ -25,8 +25,8 @@ enum GalileoMapState {
   stopped,
 }
 
-/// Controller for managing a Galileo map instance
-class GalileoMapController {
+/// Controller for managing a MapLibre map instance
+class MapLibreMapController {
   MapSize _size;
   MapSize get size => _size;
   final MapInitConfig config;
@@ -36,7 +36,7 @@ class GalileoMapController {
   final List<LayerConfig> layers;
 
   final int sessionId;
-  final rx.BehaviorSubject<GalileoMapState> _stateBroadcast;
+  final rx.BehaviorSubject<MapLibreMapState> _stateBroadcast;
   final rx.BehaviorSubject<MapViewport> _renderedViewportBroadcast =
       rx.BehaviorSubject<MapViewport>();
   StreamSubscription<RenderedMapFrame>? _renderedFrameSub;
@@ -46,12 +46,12 @@ class GalileoMapController {
   bool _running = false;
   late final ValueNotifier<int?> _textureId;
 
-  GalileoMapController._({
+  MapLibreMapController._({
     required MapSize size,
     required this.config,
     required this.layers,
     required this.sessionId,
-    required rx.BehaviorSubject<GalileoMapState> stateBroadcast,
+    required rx.BehaviorSubject<MapLibreMapState> stateBroadcast,
     required int textureId,
   }) : _size = size,
        _stateBroadcast = stateBroadcast {
@@ -60,10 +60,10 @@ class GalileoMapController {
   }
 
   /// Stream of map state changes
-  Stream<GalileoMapState> get stateStream => _stateBroadcast.stream;
+  Stream<MapLibreMapState> get stateStream => _stateBroadcast.stream;
 
   /// Current map state
-  GalileoMapState get currentState => _stateBroadcast.value;
+  MapLibreMapState get currentState => _stateBroadcast.value;
 
   /// Viewports that produced completed native texture frames.
   Stream<MapViewport> get renderedViewportStream =>
@@ -77,8 +77,8 @@ class GalileoMapController {
   /// Whether the map is currently running
   bool get isRunning => _running;
 
-  /// Create a new Galileo map controller
-  static Future<(GalileoMapController?, String?)> create({
+  /// Create a new MapLibre map controller
+  static Future<(MapLibreMapController?, String?)> create({
     required MapSize size,
     required MapInitConfig config,
     List<LayerConfig> layers = const [LayerConfig.osm()],
@@ -88,11 +88,11 @@ class GalileoMapController {
       final newSessionResp = await rlib.createNewMapSession(config: config);
 
       // Create state broadcast
-      final stateBroadcast = rx.BehaviorSubject<GalileoMapState>.seeded(
-        GalileoMapState.initializing,
+      final stateBroadcast = rx.BehaviorSubject<MapLibreMapState>.seeded(
+        MapLibreMapState.initializing,
       );
 
-      final controller = GalileoMapController._(
+      final controller = MapLibreMapController._(
         size: size,
         config: config,
         layers: layers,
@@ -114,11 +114,11 @@ class GalileoMapController {
       controller._startKeepAliveTask();
 
       // Set state to ready
-      controller._stateBroadcast.add(GalileoMapState.ready);
+      controller._stateBroadcast.add(MapLibreMapState.ready);
 
       return (controller, null);
     } catch (e) {
-      _log.severe('Error creating Galileo map', e);
+      _log.severe('Error creating MapLibre map', e);
       return (null, e.toString());
     }
   }
@@ -154,7 +154,7 @@ class GalileoMapController {
         } catch (e) {
           _log.severe('Error in keep-alive task', e);
           if (_running) {
-            _stateBroadcast.add(GalileoMapState.error);
+            _stateBroadcast.add(MapLibreMapState.error);
           }
           break;
         }
@@ -242,7 +242,7 @@ class GalileoMapController {
       await _renderedViewportBroadcast.close();
       await _stateBroadcast.close();
     } catch (e) {
-      _log.severe('Error disposing Galileo map controller', e);
+      _log.severe('Error disposing MapLibre map controller', e);
     }
     _textureId.dispose();
   }
