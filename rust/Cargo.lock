@@ -1053,29 +1053,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "galileo_flutter"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "env_logger",
- "flutter-plugin-sdk",
- "flutter_rust_bridge",
- "futures",
- "lazy_static",
- "log",
- "maplibre_native",
- "parking_lot",
- "reqwest",
- "serde_json",
- "thiserror 2.0.20",
- "tokio",
- "tracing-appender",
- "tracing-subscriber",
- "url",
- "wgpu",
-]
-
-[[package]]
 name = "generic-array"
 version = "0.12.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1768,6 +1745,29 @@ name = "lru-slab"
 version = "0.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4050469837a6ff301cd14c1f8f24f88549e6d548f24f64e2148eb0f72cebc51f"
+
+[[package]]
+name = "maplibre_flutter"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "env_logger",
+ "flutter-plugin-sdk",
+ "flutter_rust_bridge",
+ "futures",
+ "lazy_static",
+ "log",
+ "maplibre_native",
+ "parking_lot",
+ "reqwest",
+ "serde_json",
+ "thiserror 2.0.20",
+ "tokio",
+ "tracing-appender",
+ "tracing-subscriber",
+ "url",
+ "wgpu",
+]
 
 [[package]]
 name = "maplibre_native"

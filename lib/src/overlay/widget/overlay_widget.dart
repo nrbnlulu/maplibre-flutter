@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:galileo_flutter/galileo_flutter.dart';
+import 'package:maplibre_flutter/maplibre_flutter.dart';
 
 /// Positions a child widget on the map at a given lat/lon coordinate.
 ///

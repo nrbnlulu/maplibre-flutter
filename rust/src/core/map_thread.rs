@@ -25,7 +25,7 @@ use parking_lot::Mutex;
 use serde_json::{json, Value};
 
 use crate::api::dart_types::{
-    MapLibreColor, GeoLocation, MapSize, MapViewport, MouseButton, RenderedMapFrame, UserEvent,
+    GeoLocation, MapLibreColor, MapSize, MapViewport, MouseButton, RenderedMapFrame, UserEvent,
 };
 use crate::core::camera::Camera;
 
@@ -243,7 +243,7 @@ struct FrameStats {
 fn default_style(background: &MapLibreColor) -> String {
     json!({
         "version": 8,
-        "name": "galileo_flutter",
+        "name": "maplibre_flutter",
         "sources": {},
         "layers": [{
             "id": "background",
@@ -359,7 +359,7 @@ impl MapState {
             queued_frame: Arc::new(AtomicBool::new(false)),
             frame_wake: None,
             acquired_frames: Arc::new(AtomicU64::new(0)),
-            stats: std::env::var_os("GALILEO_FRAME_STATS").map(|_| FrameStats {
+            stats: std::env::var_os("MAPLIBRE_FRAME_STATS").map(|_| FrameStats {
                 since: Instant::now(),
                 rendered: 0,
                 busy: 0,

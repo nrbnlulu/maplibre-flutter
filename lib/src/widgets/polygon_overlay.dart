@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:galileo_flutter/galileo_flutter.dart';
-import 'package:galileo_flutter/src/utils.dart';
+import 'package:maplibre_flutter/maplibre_flutter.dart';
+import 'package:maplibre_flutter/src/utils.dart';
 
 const _kVertexR = 11.0;
 const _kMidpointR = 8.0;

@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:galileo_flutter/galileo_flutter.dart';
-import 'package:galileo_flutter/src/rust/api/maplibre_api.dart' as rlib;
+import 'package:maplibre_flutter/maplibre_flutter.dart';
+import 'package:maplibre_flutter/src/rust/api/maplibre_api.dart' as rlib;
 import 'package:logging/logging.dart';
 
 final _log = Logger('LayerController');

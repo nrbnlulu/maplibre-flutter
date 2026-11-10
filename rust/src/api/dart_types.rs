@@ -1,4 +1,4 @@
-//! Types shared between Dart and Rust for Galileo Flutter integration.
+//! Types shared between Dart and Rust for MapLibre Flutter integration.
 //! All types here are used by flutter_rust_bridge_codegen.
 use flutter_rust_bridge::frb;
 

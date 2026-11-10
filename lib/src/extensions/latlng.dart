@@ -1,4 +1,4 @@
-import 'package:galileo_flutter/galileo_flutter.dart';
+import 'package:maplibre_flutter/maplibre_flutter.dart';
 import 'package:latlong2/latlong.dart';
 
 extension MapLibreCoordinateExt on LatLng {

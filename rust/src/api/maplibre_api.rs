@@ -1,7 +1,7 @@
-//! Main API for Galileo Flutter integration with texture rendering.
+//! Main API for MapLibre Flutter integration with texture rendering.
 //!
 //! This module provides the interface between Dart and Rust for
-//! managing Galileo maps in Flutter applications with real texture rendering.
+//! managing MapLibre maps in Flutter applications with real texture rendering.
 
 use crate::frb_generated::StreamSink;
 use flutter_rust_bridge::frb;
@@ -17,14 +17,14 @@ pub fn init_maplibre_flutter() {
     flutter_rust_bridge::setup_default_user_utils();
 }
 
-/// Initialize the Galileo Flutter plugin runtime.
+/// Initialize the MapLibre Flutter plugin runtime.
 pub fn maplibre_flutter_init(_ffi_ptr: i64) {
     if IS_INITIALIZED.load(Ordering::SeqCst) {
         return;
     }
 
     init_logger();
-    info!("Galileo Flutter plugin initialized with texture support");
+    info!("MapLibre Flutter plugin initialized with texture support");
     IS_INITIALIZED.store(true, Ordering::SeqCst);
 }
 

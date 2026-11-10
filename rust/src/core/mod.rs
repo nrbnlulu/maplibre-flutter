@@ -25,7 +25,7 @@ pub(crate) fn init_logger() {
     if is_initialized {
         return;
     }
-    let file_appender = tracing_appender::rolling::daily("./logs", "galileo_flutter.log");
+    let file_appender = tracing_appender::rolling::daily("./logs", "maplibre_flutter.log");
     let (non_blocking_file_writer, guard) = tracing_appender::non_blocking(file_appender);
 
     let file_layer = tracing_subscriber::fmt::layer()

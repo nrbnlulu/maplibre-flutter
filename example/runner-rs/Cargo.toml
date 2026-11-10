@@ -1,5 +1,5 @@
 [package]
-name = "galileo_flutter_example"
+name = "maplibre_flutter_example"
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.93"
@@ -10,7 +10,7 @@ build = "build.rs"
 path = "src/lib.rs"
 
 [[bin]]
-name = "galileo_flutter_example"
+name = "maplibre_flutter_example"
 path = "src/main.rs"
 
 [dependencies]
@@ -18,7 +18,7 @@ flutter-plugin-sdk = { path = "../.dart_tool/flutter_rs/sdk/crates/flutter-plugi
 flutter-shell-winit = { path = "../.dart_tool/flutter_rs/sdk/crates/flutter-shell-winit" }
 
 # === BEGIN FLUTTER GENERATED RUST PLUGINS ===
-flutter_rs_plugin_galileo_flutter = { package = "galileo_flutter", path = "../.dart_tool/flutter_rs/plugins/galileo_flutter" }
+flutter_rs_plugin_maplibre_flutter = { package = "maplibre_flutter", path = "../.dart_tool/flutter_rs/plugins/maplibre_flutter" }
 # === END FLUTTER GENERATED RUST PLUGINS ===
 
 [patch.crates-io]

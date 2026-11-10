@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:galileo_flutter/galileo_flutter.dart';
+import 'package:maplibre_flutter/maplibre_flutter.dart';
 
 const double _kMercatorRadius = 6378137.0;
 

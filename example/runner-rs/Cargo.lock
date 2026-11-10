@@ -1312,7 +1312,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "galileo_flutter"
+name = "maplibre_flutter"
 version = "0.1.0"
 dependencies = [
  "anyhow",
@@ -1335,12 +1335,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "galileo_flutter_example"
+name = "maplibre_flutter_example"
 version = "0.1.0"
 dependencies = [
  "flutter-plugin-sdk",
  "flutter-shell-winit",
- "galileo_flutter",
+ "maplibre_flutter",
 ]
 
 [[package]]

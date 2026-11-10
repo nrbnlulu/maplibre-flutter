@@ -3,7 +3,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:galileo_flutter/galileo_flutter.dart';
+import 'package:maplibre_flutter/maplibre_flutter.dart';
 
 // Free, keyless MapLibre vector styles. `styleJson` accepts a style URL or the
 // style document itself; the style supplies its own sources, glyphs and sprites.

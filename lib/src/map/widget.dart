@@ -5,9 +5,9 @@ import 'package:logging/logging.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:galileo_flutter/src/map/controller.dart';
-import 'package:galileo_flutter/src/rust/api/dart_types.dart';
-import 'package:galileo_flutter/src/layer/overlay/overlay.dart';
+import 'package:maplibre_flutter/src/map/controller.dart';
+import 'package:maplibre_flutter/src/rust/api/dart_types.dart';
+import 'package:maplibre_flutter/src/layer/overlay/overlay.dart';
 
 final _log = Logger('MapLibreMapWidget');
 

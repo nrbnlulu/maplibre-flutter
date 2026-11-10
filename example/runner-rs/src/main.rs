@@ -7,7 +7,7 @@
 use std::{env, path::PathBuf, process::ExitCode};
 
 use flutter_shell_winit::{ShellConfig, run_application};
-use galileo_flutter_example::register_application;
+use maplibre_flutter_example::register_application;
 
 fn main() -> ExitCode {
     // Assets and ICU data are bundled next to the executable by
@@ -22,7 +22,7 @@ fn main() -> ExitCode {
         None => match &bundle_dir {
             Some(dir) => dir.join("flutter_assets"),
             None => {
-                eprintln!("usage: galileo_flutter_example [flutter-assets-directory]");
+                eprintln!("usage: maplibre_flutter_example [flutter-assets-directory]");
                 return ExitCode::FAILURE;
             }
         },
@@ -49,7 +49,7 @@ fn main() -> ExitCode {
     match run_application(
         ShellConfig {
             // The app can rename its window later, e.g. with `MaterialApp.title`.
-            title: "galileo_flutter_example".to_owned(),
+            title: "maplibre_flutter_example".to_owned(),
             assets_path: assets_path.to_string_lossy().into_owned(),
             icu_data_path: icu_data_path.to_string_lossy().into_owned(),
             aot_library_path,
@@ -59,7 +59,7 @@ fn main() -> ExitCode {
     ) {
         Ok(()) => ExitCode::SUCCESS,
         Err(error) => {
-            eprintln!("failed to run galileo_flutter_example: {error}");
+            eprintln!("failed to run maplibre_flutter_example: {error}");
             ExitCode::FAILURE
         }
     }

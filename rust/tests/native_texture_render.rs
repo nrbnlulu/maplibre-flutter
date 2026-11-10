@@ -1,6 +1,6 @@
 //! Headless smoke test for the native GPU texture render path.
 //!
-//! Creates a real wgpu device, renders an empty Galileo map through
+//! Creates a real wgpu device, renders an empty MapLibre map through
 //! `WindowlessRenderer` into an externally owned texture, and verifies the
 //! background clear reaches the texture. The test skips itself when no
 //! Vulkan adapter is available.
@@ -11,7 +11,7 @@ use galileo::galileo_types::cartesian::Size;
 use galileo::layer::FeatureLayer;
 use galileo::symbol::ImagePointSymbol;
 use galileo::MapBuilder;
-use galileo_flutter::core::WindowlessRenderer;
+use maplibre_flutter::core::WindowlessRenderer;
 
 const SIZE: u32 = 128;
 

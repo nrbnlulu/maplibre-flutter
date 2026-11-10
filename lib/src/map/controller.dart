@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:galileo_flutter/src/rust/api/dart_types.dart';
-import 'package:galileo_flutter/src/rust/api/maplibre_api.dart' as rlib;
-import 'package:galileo_flutter/src/layer/controller.dart';
+import 'package:maplibre_flutter/src/rust/api/dart_types.dart';
+import 'package:maplibre_flutter/src/rust/api/maplibre_api.dart' as rlib;
+import 'package:maplibre_flutter/src/layer/controller.dart';
 import 'package:logging/logging.dart';
 
 import "package:rxdart/rxdart.dart" as rx;

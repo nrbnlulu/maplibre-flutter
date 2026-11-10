@@ -1,5 +1,5 @@
 [package]
-name = "galileo_flutter"
+name = "maplibre_flutter"
 version = "0.1.0"
 edition = "2021"
 

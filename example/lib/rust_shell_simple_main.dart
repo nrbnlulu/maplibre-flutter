@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:galileo_flutter/galileo_flutter.dart';
+import 'package:maplibre_flutter/maplibre_flutter.dart';
 
 const _mapSize = MapSize(width: 800, height: 600);
 

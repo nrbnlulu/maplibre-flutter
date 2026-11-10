@@ -1,9 +1,9 @@
-import 'package:galileo_flutter/galileo_flutter.dart';
+import 'package:maplibre_flutter/maplibre_flutter.dart';
 
 import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
-import 'package:galileo_flutter/src/utils.dart';
+import 'package:maplibre_flutter/src/utils.dart';
 
 class PolygonEditController extends FeatureEditController {
   // config editor

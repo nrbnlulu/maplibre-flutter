@@ -1,6 +1,6 @@
 import 'dart:ui' as ui;
 
-import 'package:galileo_flutter/galileo_flutter.dart';
+import 'package:maplibre_flutter/maplibre_flutter.dart';
 import 'package:latlong2/latlong.dart';
 
 extension MapLibreColorExt on ui.Color {
