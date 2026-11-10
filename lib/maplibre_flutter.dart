@@ -3,6 +3,10 @@ library;
 import 'dart:ffi' as ffi;
 import 'dart:io';
 
+import 'src/map/widget.dart' show MapLibreMapWidget;
+import 'src/map/controller.dart' show MapLibreMapController, MapLibreMapState;
+import 'src/rust/api/dart_types.dart' show MapLibreColor;
+
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart'
     show ExternalLibrary;
 import 'package:path_provider/path_provider.dart';

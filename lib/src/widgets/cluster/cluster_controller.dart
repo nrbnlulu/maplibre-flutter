@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:maplibre_flutter/maplibre_flutter.dart';
-import 'package:maplibre_flutter/src/rust/api/dart_types.dart' show UserEvent;
 
 /// A group of nearby points, formed by [PointClusterController.computeClusters]
 /// because their projected screen positions fell within the cluster radius
