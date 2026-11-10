@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:galileo_flutter/galileo_flutter.dart';
-import 'package:galileo_flutter/src/utils.dart';
+import 'package:maplibre_flutter/maplibre_flutter.dart';
+import 'package:maplibre_flutter/src/utils.dart';
 
 const _kVertexR = 11.0;
 const _kMidpointR = 8.0;
 
 const _kHandleRed = Color(0xFFE53935);
 
-Paint _fillPaint(Color c) =>
-    Paint()
-      ..color = c
-      ..style = PaintingStyle.fill;
-Paint _strokePaint(Color c, double w) =>
-    Paint()
-      ..color = c
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = w;
+Paint _fillPaint(Color c) => Paint()
+  ..color = c
+  ..style = PaintingStyle.fill;
+Paint _strokePaint(Color c, double w) => Paint()
+  ..color = c
+  ..style = PaintingStyle.stroke
+  ..strokeWidth = w;
 
 final Paint _sharedPaint = Paint();
 
@@ -69,7 +67,7 @@ class PolygonEditOverlayPainter extends CustomPainter {
     if (vertices.isEmpty) return;
     canvas.clipRect(Offset.zero & size);
 
-    final pts = vertices.map((v) => geoToOffset(v, size, viewport)).toList();
+    final pts = geosToOffsets(vertices, size, viewport);
 
     if (pts.length >= 3) {
       final path = Path()..moveTo(pts[0].dx, pts[0].dy);
@@ -133,7 +131,7 @@ class PendingPolygonPainter extends CustomPainter {
     if (vertices.isEmpty) return;
     canvas.clipRect(Offset.zero & size);
 
-    final pts = vertices.map((v) => geoToOffset(v, size, viewport)).toList();
+    final pts = geosToOffsets(vertices, size, viewport);
 
     if (pts.length >= 3) {
       final path = Path()..moveTo(pts[0].dx, pts[0].dy);

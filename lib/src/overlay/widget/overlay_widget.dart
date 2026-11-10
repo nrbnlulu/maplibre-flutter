@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:galileo_flutter/galileo_flutter.dart';
+import 'package:maplibre_flutter/maplibre_flutter.dart';
 
 /// Positions a child widget on the map at a given lat/lon coordinate.
 ///
 /// Pushed into [LayerController] via [LayerController.addOverlay].
-/// [MapOverlayLayer] inside [GalileoMapWidget] reads the list and
+/// [MapOverlayLayer] inside [MapLibreMapWidget] reads the list and
 /// repositions each overlay whenever the viewport changes.
 class OverlayWidget extends StatelessWidget {
   final GeoLocation loc;
@@ -58,6 +58,11 @@ class OverlayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(width: width, height: height, child: child);
+    // The flow layer repositions this subtree by transform on every viewport
+    // change. The repaint boundary lets the child rasterize once and be
+    // re-composited instead of re-painted for each position update.
+    return RepaintBoundary(
+      child: SizedBox(width: width, height: height, child: child),
+    );
   }
 }

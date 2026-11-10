@@ -1,6 +1,6 @@
-# galileo_flutter_example
+# maplibre_flutter_example
 
-Demonstrates how to use the galileo_flutter plugin.
+Demonstrates how to use the maplibre_flutter plugin.
 
 ## Getting Started
 

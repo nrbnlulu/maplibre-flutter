@@ -1,8 +1,8 @@
-import 'package:galileo_flutter/galileo_flutter.dart';
+import 'package:maplibre_flutter/maplibre_flutter.dart';
 import 'package:latlong2/latlong.dart';
 
-extension GalileoCoordinateExt on LatLng {
-  GeoLocation toGalileo() {
+extension MapLibreCoordinateExt on LatLng {
+  GeoLocation toMapLibre() {
     return GeoLocation(latitude: latitude, longitude: longitude);
   }
 }

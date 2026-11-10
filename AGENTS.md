@@ -1,58 +1,39 @@
-# Galileo Flutter - Agent Guide
+# MapLibre Flutter - Agent Guide
 
-## Project Overview
-Galileo Flutter is a Flutter FFI plugin that integrates the Galileo mapping engine with Flutter applications. It allows Flutter apps to leverage the powerful Galileo mapping library through Rust FFI bindings.
+## Project overview
+MapLibre Flutter is a Flutter FFI plugin backed by MapLibre Native. Dart widgets and controllers communicate with Rust through flutter_rust_bridge.
 
 ## Architecture
-- **Flutter Layer** (`./lib`): Flutter/Dart abstractions and API
-- **Interop Layer** (`./rust/api`): FFI functions and type definitions
-- **Core Logic** (`./rust/src`): Core Rust implementation using the Galileo library
+- `lib/`: public Dart API and Flutter widgets; entry point `maplibre_flutter.dart`.
+- `rust/src/api/`: bridge functions and shared types.
+- `rust/src/core/map_session.rs`: map sessions and camera translation.
+- `rust/src/core/map_thread.rs`: dedicated MapLibre render thread.
+- `rust/src/rust_shell.rs`: Rust shell plugin registration and GPU access.
+- `example/runner-rs/`: example Rust shell runner.
 
-## Key Dependencies
-- galileo: Core mapping library (v0.2.1, git: https://github.com/galileo-map/galileo.git)
-- flutter_rust_bridge: FFI bridge generator
-- wgpu: WebGPU implementation for rendering
-- irondash: Cross-platform texture handling
+## Dependencies and rendering
+- `maplibre_native`: the `wgpu-30` branch of the maplibre-native-rs fork.
+- `flutter_rust_bridge`: pinned to 2.13.0 in Rust; use the matching generator.
+- `flutter-plugin-sdk`: provides shell-owned GPU textures and shares the pinned wgpu revision through the Cargo patch configuration.
+- MapLibre renders directly into shell-owned texture views. The renderer runs on its own thread because it is not Send.
+- `.cargo/config.toml` expects native core artifacts in `.cache/mln-core`. `tool/setup-mln-core.sh` prepares them and may perform a substantial C++ build.
+- The standalone Rust build expects the shell SDK under `example/.dart_tool/flutter_rs/sdk`.
 
-## Build Process
-1. Ensure Rust and Flutter are installed
-2. Install `flutter_rust_bridge_codegen` if modifying Rust-Dart interop
-3. Run `flutter_rust_bridge_codegen generate` after Rust API changes
-4. Build with standard Flutter commands
+## Development
+- `flutter pub get`: resolve Dart dependencies.
+- `flutter_rust_bridge_codegen generate`: regenerate bindings after Rust API changes.
+- `rlutter dart run build_runner build --build-filter=lib/src/rust/api/dart_types.freezed.dart`: regenerate the shared union implementations if needed.
+- `cargo check --manifest-path rust/Cargo.toml`: check Rust.
+- `cargo fmt --manifest-path rust/Cargo.toml`: format Rust.
+- `rlutter dart format lib example/lib`: format Dart.
+- `rlutter dart analyze lib example/lib`: analyze Dart.
+- Run the example on desktop using the Rust shell tooling; web is not supported by the native renderer.
 
-## Development Commands
-- `cd example && flutter run`: Run the example app
-- `cargo check`: Check Rust compilation
-- `flutter pub get`: Get Flutter dependencies
-- `dart format .`: Format Dart code
-- `cargo fmt`: Format Rust code
+## Naming
+Use `maplibre_flutter` for package and native artifact names, `MapLibre` for public Dart types, and `maplibre_api` for the bridge module. The standalone fork exposes only the MapLibre API.
 
-## Known Issues & Notes
-- The project was moved out of the Galileo monorepo, so dependency paths were updated from local paths to git references
-- TileSchema::test_schema() was replaced with TileSchema::web(19) due to API changes in the upstream Galileo library
-- The example app requires desktop variant when running (not web)
+Use the internal `rlutter` toolchain: `rlutter dart ...` for Dart commands and `rlutter run` for the example.
 
-## Common Tasks
-1. Adding new API functions: Define in `./rust/api` and regenerate with `flutter_rust_bridge_codegen`
-2. Modifying rendering: Look at `./rust/src/core/windowless_renderer.rs` and texture handling
-3. Working with maps: Check `./rust/src/core/galileo_ref.rs` and `./rust/src/core/map_session.rs`
+## Taskfile commands
 
-## Project Structure
-```
-galileo_flutter/
-├── lib/                    # Flutter/Dart code
-├── rust/
-│   ├── src/
-│   │   ├── api/           # API definitions for FFI
-│   │   ├── core/          # Core implementation
-│   │   └── ...            # Other Rust modules
-│   └── Cargo.toml         # Rust dependencies
-├── example/               # Example Flutter app
-├── test_driver/           # Integration tests
-└── ...
-```
-
-## Configuration Files
-- `flutter_rust_bridge.yaml`: FFI bridge configuration
-- `pubspec.yaml`: Flutter dependencies
-- `rust/Cargo.toml`: Rust dependencies
+`task rust.fmt-check`, `task rust.check`, `task rust.test`, and `task mln-core` provide native checks and core setup. The current `flutter.*` tasks select FVM or direct Flutter/Dart binaries; use the equivalent `rlutter dart` commands with the internal toolchain. There is no rlutter run task. The `codegen` task deletes `.dart_tool` before generating; invoking the generator directly avoids clearing local dependency metadata.

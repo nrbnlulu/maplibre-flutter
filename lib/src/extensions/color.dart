@@ -1,15 +1,16 @@
 import 'dart:ui' as ui;
-import 'package:galileo_flutter/galileo_flutter.dart';
+
+import 'package:maplibre_flutter/maplibre_flutter.dart';
 import 'package:latlong2/latlong.dart';
 
-extension GalileoColorExt on ui.Color {
-  GalileoColor toGalileo() {
-    return GalileoColor(r: r, g: g, b: b, a: a);
+extension MapLibreColorExt on ui.Color {
+  MapLibreColor toMapLibre() {
+    return MapLibreColor(r: r, g: g, b: b, a: a);
   }
 }
 
-extension GalileoCoordinateExt on LatLng {
-  GeoLocation toGalileo() {
+extension MapLibreCoordinateExt on LatLng {
+  GeoLocation toMapLibre() {
     return GeoLocation(latitude: latitude, longitude: longitude);
   }
 }

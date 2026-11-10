@@ -4,7 +4,7 @@
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
 import 'api/dart_types.dart';
-import 'api/galileo_api.dart';
+import 'api/maplibre_api.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi' as ffi;
@@ -79,9 +79,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   double dco_decode_f_64(dynamic raw);
 
   @protected
-  GalileoColor dco_decode_galileo_color(dynamic raw);
-
-  @protected
   GeoLocation dco_decode_geo_location(dynamic raw);
 
   @protected
@@ -110,6 +107,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   MapInitConfig dco_decode_map_init_config(dynamic raw);
+
+  @protected
+  MapLibreColor dco_decode_map_libre_color(dynamic raw);
 
   @protected
   MapSize dco_decode_map_size(dynamic raw);
@@ -240,9 +240,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   double sse_decode_f_64(SseDeserializer deserializer);
 
   @protected
-  GalileoColor sse_decode_galileo_color(SseDeserializer deserializer);
-
-  @protected
   GeoLocation sse_decode_geo_location(SseDeserializer deserializer);
 
   @protected
@@ -273,6 +270,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   MapInitConfig sse_decode_map_init_config(SseDeserializer deserializer);
+
+  @protected
+  MapLibreColor sse_decode_map_libre_color(SseDeserializer deserializer);
 
   @protected
   MapSize sse_decode_map_size(SseDeserializer deserializer);
@@ -429,9 +429,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_f_64(double self, SseSerializer serializer);
 
   @protected
-  void sse_encode_galileo_color(GalileoColor self, SseSerializer serializer);
-
-  @protected
   void sse_encode_geo_location(GeoLocation self, SseSerializer serializer);
 
   @protected
@@ -469,6 +466,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_map_init_config(MapInitConfig self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_map_libre_color(MapLibreColor self, SseSerializer serializer);
 
   @protected
   void sse_encode_map_size(MapSize self, SseSerializer serializer);

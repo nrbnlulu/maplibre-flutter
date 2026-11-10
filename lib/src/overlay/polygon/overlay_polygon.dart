@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:galileo_flutter/galileo_flutter.dart';
+import 'package:maplibre_flutter/maplibre_flutter.dart';
 
 /// Overlay widget for drawing a new polygon.
 ///
@@ -28,13 +28,13 @@ class PolygonDrawOverlay extends StatelessWidget {
 
             return Listener(
               behavior: HitTestBehavior.opaque,
-              onPointerDown:
-                  (e) => ctrl.handlePointerDown(e, constraints.biggest),
-              onPointerMove:
-                  (e) => ctrl.handlePointerMove(e, constraints.biggest),
+              onPointerDown: (e) =>
+                  ctrl.handlePointerDown(e, constraints.biggest),
+              onPointerMove: (e) =>
+                  ctrl.handlePointerMove(e, constraints.biggest),
               onPointerUp: (e) => ctrl.handlePointerUp(e, constraints.biggest),
-              onPointerCancel:
-                  (e) => ctrl.handlePointerCancel(e, constraints.biggest),
+              onPointerCancel: (e) =>
+                  ctrl.handlePointerCancel(e, constraints.biggest),
               child: CustomPaint(
                 painter: PendingPolygonPainter(
                   vertices: ctrl.pendingVertices,
