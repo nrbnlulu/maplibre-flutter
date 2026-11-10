@@ -4,7 +4,7 @@
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
 import 'api/dart_types.dart';
-import 'api/galileo_api.dart';
+import 'api/maplibre_api.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'frb_generated.dart';
@@ -56,7 +56,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 
   @override
   Future<void> executeRustInitializers() async {
-    await api.crateApiGalileoApiInitGalileoFlutter();
+    await api.crateApiMaplibreApiInitMaplibreFlutter();
   }
 
   @override
@@ -67,7 +67,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.13.0';
 
   @override
-  int get rustContentHash => 2064308204;
+  int get rustContentHash => 43915171;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -79,44 +79,38 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 }
 
 abstract class RustLibApi extends BaseApi {
-  Future<int> crateApiGalileoApiAddPointFeatureLayer({
+  Future<int> crateApiMaplibreApiAddPointFeatureLayer({
     required int sessionId,
     required List<Point> initialPoints,
   });
 
-  Future<int> crateApiGalileoApiAddPointToLayer({
+  Future<int> crateApiMaplibreApiAddPointToLayer({
     required int sessionId,
     required int layerId,
     required Point point,
   });
 
-  Future<int> crateApiGalileoApiAddPolygonFeatureLayer({
+  Future<int> crateApiMaplibreApiAddPolygonFeatureLayer({
     required int sessionId,
     required List<Polygon> initialPolygons,
   });
 
-  Future<int> crateApiGalileoApiAddPolygonToLayer({
+  Future<int> crateApiMaplibreApiAddPolygonToLayer({
     required int sessionId,
     required int layerId,
     required Polygon polygon,
   });
 
-  Future<void> crateApiGalileoApiAddSessionLayer({
+  Future<void> crateApiMaplibreApiAddSessionLayer({
     required int sessionId,
     required LayerConfig layerConfig,
   });
 
-  Future<CreateNewSessionResponse> crateApiGalileoApiCreateNewMapSession({
+  Future<CreateNewSessionResponse> crateApiMaplibreApiCreateNewMapSession({
     required MapInitConfig config,
   });
 
-  Future<void> crateApiGalileoApiDestroySession({required int sessionId});
-
-  Future<GalileoColor> crateApiDartTypesGalileoColorDefault();
-
-  Future<void> crateApiGalileoApiGalileoFlutterInit({
-    required PlatformInt64 ffiPtr,
-  });
+  Future<void> crateApiMaplibreApiDestroySession({required int sessionId});
 
   List<ScreenLocation> crateApiDartTypesGeoLocationPointsToScreen({
     required List<GeoLocation> points,
@@ -132,36 +126,42 @@ abstract class RustLibApi extends BaseApi {
     required MapViewport vp,
   });
 
-  Future<MapViewport?> crateApiGalileoApiGetMapViewport({
+  Future<MapViewport?> crateApiMaplibreApiGetMapViewport({
     required int sessionId,
   });
 
-  void crateApiGalileoApiHandleEventForSession({
+  void crateApiMaplibreApiHandleEventForSession({
     required int sessionId,
     required UserEvent event,
   });
 
-  Future<void> crateApiGalileoApiInitGalileoFlutter();
+  Future<void> crateApiMaplibreApiInitMaplibreFlutter();
 
-  Future<void> crateApiGalileoApiMarkSessionAlive({required int sessionId});
+  Future<MapLibreColor> crateApiDartTypesMapLibreColorDefault();
+
+  Future<void> crateApiMaplibreApiMaplibreFlutterInit({
+    required PlatformInt64 ffiPtr,
+  });
+
+  Future<void> crateApiMaplibreApiMarkSessionAlive({required int sessionId});
 
   Future<PolygonStyle> crateApiDartTypesPolygonStyleDefault();
 
-  Future<bool> crateApiGalileoApiRemovePointFromLayer({
+  Future<bool> crateApiMaplibreApiRemovePointFromLayer({
     required int sessionId,
     required int layerId,
     required int index,
   });
 
-  Future<bool> crateApiGalileoApiRemovePolygonFromLayer({
+  Future<bool> crateApiMaplibreApiRemovePolygonFromLayer({
     required int sessionId,
     required int layerId,
     required int index,
   });
 
-  Future<void> crateApiGalileoApiRequestMapRedraw({required int sessionId});
+  Future<void> crateApiMaplibreApiRequestMapRedraw({required int sessionId});
 
-  Future<PlatformInt64> crateApiGalileoApiResizeSession({
+  Future<PlatformInt64> crateApiMaplibreApiResizeSession({
     required int sessionId,
     required MapSize newSize,
   });
@@ -173,9 +173,9 @@ abstract class RustLibApi extends BaseApi {
     required double width,
   });
 
-  Future<void> crateApiGalileoApiSetTileCachePath({String? path});
+  Future<void> crateApiMaplibreApiSetTileCachePath({String? path});
 
-  Stream<RenderedMapFrame> crateApiGalileoApiStreamRenderedMapFrames({
+  Stream<RenderedMapFrame> crateApiMaplibreApiStreamRenderedMapFrames({
     required int sessionId,
   });
 }
@@ -189,7 +189,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   });
 
   @override
-  Future<int> crateApiGalileoApiAddPointFeatureLayer({
+  Future<int> crateApiMaplibreApiAddPointFeatureLayer({
     required int sessionId,
     required List<Point> initialPoints,
   }) {
@@ -210,21 +210,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_u_32,
           decodeErrorData: sse_decode_AnyhowException,
         ),
-        constMeta: kCrateApiGalileoApiAddPointFeatureLayerConstMeta,
+        constMeta: kCrateApiMaplibreApiAddPointFeatureLayerConstMeta,
         argValues: [sessionId, initialPoints],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiGalileoApiAddPointFeatureLayerConstMeta =>
+  TaskConstMeta get kCrateApiMaplibreApiAddPointFeatureLayerConstMeta =>
       const TaskConstMeta(
         debugName: "add_point_feature_layer",
         argNames: ["sessionId", "initialPoints"],
       );
 
   @override
-  Future<int> crateApiGalileoApiAddPointToLayer({
+  Future<int> crateApiMaplibreApiAddPointToLayer({
     required int sessionId,
     required int layerId,
     required Point point,
@@ -247,21 +247,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_u_32,
           decodeErrorData: sse_decode_AnyhowException,
         ),
-        constMeta: kCrateApiGalileoApiAddPointToLayerConstMeta,
+        constMeta: kCrateApiMaplibreApiAddPointToLayerConstMeta,
         argValues: [sessionId, layerId, point],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiGalileoApiAddPointToLayerConstMeta =>
+  TaskConstMeta get kCrateApiMaplibreApiAddPointToLayerConstMeta =>
       const TaskConstMeta(
         debugName: "add_point_to_layer",
         argNames: ["sessionId", "layerId", "point"],
       );
 
   @override
-  Future<int> crateApiGalileoApiAddPolygonFeatureLayer({
+  Future<int> crateApiMaplibreApiAddPolygonFeatureLayer({
     required int sessionId,
     required List<Polygon> initialPolygons,
   }) {
@@ -282,21 +282,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_u_32,
           decodeErrorData: sse_decode_AnyhowException,
         ),
-        constMeta: kCrateApiGalileoApiAddPolygonFeatureLayerConstMeta,
+        constMeta: kCrateApiMaplibreApiAddPolygonFeatureLayerConstMeta,
         argValues: [sessionId, initialPolygons],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiGalileoApiAddPolygonFeatureLayerConstMeta =>
+  TaskConstMeta get kCrateApiMaplibreApiAddPolygonFeatureLayerConstMeta =>
       const TaskConstMeta(
         debugName: "add_polygon_feature_layer",
         argNames: ["sessionId", "initialPolygons"],
       );
 
   @override
-  Future<int> crateApiGalileoApiAddPolygonToLayer({
+  Future<int> crateApiMaplibreApiAddPolygonToLayer({
     required int sessionId,
     required int layerId,
     required Polygon polygon,
@@ -319,21 +319,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_u_32,
           decodeErrorData: sse_decode_AnyhowException,
         ),
-        constMeta: kCrateApiGalileoApiAddPolygonToLayerConstMeta,
+        constMeta: kCrateApiMaplibreApiAddPolygonToLayerConstMeta,
         argValues: [sessionId, layerId, polygon],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiGalileoApiAddPolygonToLayerConstMeta =>
+  TaskConstMeta get kCrateApiMaplibreApiAddPolygonToLayerConstMeta =>
       const TaskConstMeta(
         debugName: "add_polygon_to_layer",
         argNames: ["sessionId", "layerId", "polygon"],
       );
 
   @override
-  Future<void> crateApiGalileoApiAddSessionLayer({
+  Future<void> crateApiMaplibreApiAddSessionLayer({
     required int sessionId,
     required LayerConfig layerConfig,
   }) {
@@ -354,21 +354,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_unit,
           decodeErrorData: sse_decode_AnyhowException,
         ),
-        constMeta: kCrateApiGalileoApiAddSessionLayerConstMeta,
+        constMeta: kCrateApiMaplibreApiAddSessionLayerConstMeta,
         argValues: [sessionId, layerConfig],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiGalileoApiAddSessionLayerConstMeta =>
+  TaskConstMeta get kCrateApiMaplibreApiAddSessionLayerConstMeta =>
       const TaskConstMeta(
         debugName: "add_session_layer",
         argNames: ["sessionId", "layerConfig"],
       );
 
   @override
-  Future<CreateNewSessionResponse> crateApiGalileoApiCreateNewMapSession({
+  Future<CreateNewSessionResponse> crateApiMaplibreApiCreateNewMapSession({
     required MapInitConfig config,
   }) {
     return handler.executeNormal(
@@ -387,21 +387,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_create_new_session_response,
           decodeErrorData: sse_decode_AnyhowException,
         ),
-        constMeta: kCrateApiGalileoApiCreateNewMapSessionConstMeta,
+        constMeta: kCrateApiMaplibreApiCreateNewMapSessionConstMeta,
         argValues: [config],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiGalileoApiCreateNewMapSessionConstMeta =>
+  TaskConstMeta get kCrateApiMaplibreApiCreateNewMapSessionConstMeta =>
       const TaskConstMeta(
         debugName: "create_new_map_session",
         argNames: ["config"],
       );
 
   @override
-  Future<void> crateApiGalileoApiDestroySession({required int sessionId}) {
+  Future<void> crateApiMaplibreApiDestroySession({required int sessionId}) {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
@@ -418,77 +418,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_unit,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiGalileoApiDestroySessionConstMeta,
+        constMeta: kCrateApiMaplibreApiDestroySessionConstMeta,
         argValues: [sessionId],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiGalileoApiDestroySessionConstMeta =>
+  TaskConstMeta get kCrateApiMaplibreApiDestroySessionConstMeta =>
       const TaskConstMeta(
         debugName: "destroy_session",
         argNames: ["sessionId"],
-      );
-
-  @override
-  Future<GalileoColor> crateApiDartTypesGalileoColorDefault() {
-    return handler.executeNormal(
-      NormalTask(
-        callFfi: (port_) {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          pdeCallFfi(
-            generalizedFrbRustBinding,
-            serializer,
-            funcId: 8,
-            port: port_,
-          );
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_galileo_color,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiDartTypesGalileoColorDefaultConstMeta,
-        argValues: [],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiDartTypesGalileoColorDefaultConstMeta =>
-      const TaskConstMeta(debugName: "galileo_color_default", argNames: []);
-
-  @override
-  Future<void> crateApiGalileoApiGalileoFlutterInit({
-    required PlatformInt64 ffiPtr,
-  }) {
-    return handler.executeNormal(
-      NormalTask(
-        callFfi: (port_) {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_i_64(ffiPtr, serializer);
-          pdeCallFfi(
-            generalizedFrbRustBinding,
-            serializer,
-            funcId: 9,
-            port: port_,
-          );
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiGalileoApiGalileoFlutterInitConstMeta,
-        argValues: [ffiPtr],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiGalileoApiGalileoFlutterInitConstMeta =>
-      const TaskConstMeta(
-        debugName: "galileo_flutter_init",
-        argNames: ["ffiPtr"],
       );
 
   @override
@@ -506,7 +446,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           sse_encode_f_64(height, serializer);
           sse_encode_f_64(width, serializer);
           sse_encode_box_autoadd_map_viewport(vp, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 10)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 8)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_list_screen_location,
@@ -540,7 +480,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           sse_encode_f_64(height, serializer);
           sse_encode_f_64(width, serializer);
           sse_encode_box_autoadd_map_viewport(vp, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 11)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 9)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_screen_location,
@@ -560,7 +500,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<MapViewport?> crateApiGalileoApiGetMapViewport({
+  Future<MapViewport?> crateApiMaplibreApiGetMapViewport({
     required int sessionId,
   }) {
     return handler.executeNormal(
@@ -571,7 +511,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 12,
+            funcId: 10,
             port: port_,
           );
         },
@@ -579,21 +519,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_opt_box_autoadd_map_viewport,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiGalileoApiGetMapViewportConstMeta,
+        constMeta: kCrateApiMaplibreApiGetMapViewportConstMeta,
         argValues: [sessionId],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiGalileoApiGetMapViewportConstMeta =>
+  TaskConstMeta get kCrateApiMaplibreApiGetMapViewportConstMeta =>
       const TaskConstMeta(
         debugName: "get_map_viewport",
         argNames: ["sessionId"],
       );
 
   @override
-  void crateApiGalileoApiHandleEventForSession({
+  void crateApiMaplibreApiHandleEventForSession({
     required int sessionId,
     required UserEvent event,
   }) {
@@ -603,31 +543,88 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(sessionId, serializer);
           sse_encode_box_autoadd_user_event(event, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 11)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiGalileoApiHandleEventForSessionConstMeta,
+        constMeta: kCrateApiMaplibreApiHandleEventForSessionConstMeta,
         argValues: [sessionId, event],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiGalileoApiHandleEventForSessionConstMeta =>
+  TaskConstMeta get kCrateApiMaplibreApiHandleEventForSessionConstMeta =>
       const TaskConstMeta(
         debugName: "handle_event_for_session",
         argNames: ["sessionId", "event"],
       );
 
   @override
-  Future<void> crateApiGalileoApiInitGalileoFlutter() {
+  Future<void> crateApiMaplibreApiInitMaplibreFlutter() {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
           final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 12,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiMaplibreApiInitMaplibreFlutterConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiMaplibreApiInitMaplibreFlutterConstMeta =>
+      const TaskConstMeta(debugName: "init_maplibre_flutter", argNames: []);
+
+  @override
+  Future<MapLibreColor> crateApiDartTypesMapLibreColorDefault() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 13,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_map_libre_color,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiDartTypesMapLibreColorDefaultConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiDartTypesMapLibreColorDefaultConstMeta =>
+      const TaskConstMeta(debugName: "map_libre_color_default", argNames: []);
+
+  @override
+  Future<void> crateApiMaplibreApiMaplibreFlutterInit({
+    required PlatformInt64 ffiPtr,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_i_64(ffiPtr, serializer);
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
@@ -639,18 +636,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_unit,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiGalileoApiInitGalileoFlutterConstMeta,
-        argValues: [],
+        constMeta: kCrateApiMaplibreApiMaplibreFlutterInitConstMeta,
+        argValues: [ffiPtr],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiGalileoApiInitGalileoFlutterConstMeta =>
-      const TaskConstMeta(debugName: "init_galileo_flutter", argNames: []);
+  TaskConstMeta get kCrateApiMaplibreApiMaplibreFlutterInitConstMeta =>
+      const TaskConstMeta(
+        debugName: "maplibre_flutter_init",
+        argNames: ["ffiPtr"],
+      );
 
   @override
-  Future<void> crateApiGalileoApiMarkSessionAlive({required int sessionId}) {
+  Future<void> crateApiMaplibreApiMarkSessionAlive({required int sessionId}) {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
@@ -667,14 +667,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_unit,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiGalileoApiMarkSessionAliveConstMeta,
+        constMeta: kCrateApiMaplibreApiMarkSessionAliveConstMeta,
         argValues: [sessionId],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiGalileoApiMarkSessionAliveConstMeta =>
+  TaskConstMeta get kCrateApiMaplibreApiMarkSessionAliveConstMeta =>
       const TaskConstMeta(
         debugName: "mark_session_alive",
         argNames: ["sessionId"],
@@ -708,7 +708,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "polygon_style_default", argNames: []);
 
   @override
-  Future<bool> crateApiGalileoApiRemovePointFromLayer({
+  Future<bool> crateApiMaplibreApiRemovePointFromLayer({
     required int sessionId,
     required int layerId,
     required int index,
@@ -731,21 +731,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_bool,
           decodeErrorData: sse_decode_AnyhowException,
         ),
-        constMeta: kCrateApiGalileoApiRemovePointFromLayerConstMeta,
+        constMeta: kCrateApiMaplibreApiRemovePointFromLayerConstMeta,
         argValues: [sessionId, layerId, index],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiGalileoApiRemovePointFromLayerConstMeta =>
+  TaskConstMeta get kCrateApiMaplibreApiRemovePointFromLayerConstMeta =>
       const TaskConstMeta(
         debugName: "remove_point_from_layer",
         argNames: ["sessionId", "layerId", "index"],
       );
 
   @override
-  Future<bool> crateApiGalileoApiRemovePolygonFromLayer({
+  Future<bool> crateApiMaplibreApiRemovePolygonFromLayer({
     required int sessionId,
     required int layerId,
     required int index,
@@ -768,21 +768,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_bool,
           decodeErrorData: sse_decode_AnyhowException,
         ),
-        constMeta: kCrateApiGalileoApiRemovePolygonFromLayerConstMeta,
+        constMeta: kCrateApiMaplibreApiRemovePolygonFromLayerConstMeta,
         argValues: [sessionId, layerId, index],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiGalileoApiRemovePolygonFromLayerConstMeta =>
+  TaskConstMeta get kCrateApiMaplibreApiRemovePolygonFromLayerConstMeta =>
       const TaskConstMeta(
         debugName: "remove_polygon_from_layer",
         argNames: ["sessionId", "layerId", "index"],
       );
 
   @override
-  Future<void> crateApiGalileoApiRequestMapRedraw({required int sessionId}) {
+  Future<void> crateApiMaplibreApiRequestMapRedraw({required int sessionId}) {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
@@ -799,21 +799,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_unit,
           decodeErrorData: sse_decode_AnyhowException,
         ),
-        constMeta: kCrateApiGalileoApiRequestMapRedrawConstMeta,
+        constMeta: kCrateApiMaplibreApiRequestMapRedrawConstMeta,
         argValues: [sessionId],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiGalileoApiRequestMapRedrawConstMeta =>
+  TaskConstMeta get kCrateApiMaplibreApiRequestMapRedrawConstMeta =>
       const TaskConstMeta(
         debugName: "request_map_redraw",
         argNames: ["sessionId"],
       );
 
   @override
-  Future<PlatformInt64> crateApiGalileoApiResizeSession({
+  Future<PlatformInt64> crateApiMaplibreApiResizeSession({
     required int sessionId,
     required MapSize newSize,
   }) {
@@ -834,14 +834,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_i_64,
           decodeErrorData: sse_decode_AnyhowException,
         ),
-        constMeta: kCrateApiGalileoApiResizeSessionConstMeta,
+        constMeta: kCrateApiMaplibreApiResizeSessionConstMeta,
         argValues: [sessionId, newSize],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiGalileoApiResizeSessionConstMeta =>
+  TaskConstMeta get kCrateApiMaplibreApiResizeSessionConstMeta =>
       const TaskConstMeta(
         debugName: "resize_session",
         argNames: ["sessionId", "newSize"],
@@ -882,7 +882,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<void> crateApiGalileoApiSetTileCachePath({String? path}) {
+  Future<void> crateApiMaplibreApiSetTileCachePath({String? path}) {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
@@ -899,18 +899,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_unit,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiGalileoApiSetTileCachePathConstMeta,
+        constMeta: kCrateApiMaplibreApiSetTileCachePathConstMeta,
         argValues: [path],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiGalileoApiSetTileCachePathConstMeta =>
+  TaskConstMeta get kCrateApiMaplibreApiSetTileCachePathConstMeta =>
       const TaskConstMeta(debugName: "set_tile_cache_path", argNames: ["path"]);
 
   @override
-  Stream<RenderedMapFrame> crateApiGalileoApiStreamRenderedMapFrames({
+  Stream<RenderedMapFrame> crateApiMaplibreApiStreamRenderedMapFrames({
     required int sessionId,
   }) {
     final sink = RustStreamSink<RenderedMapFrame>();
@@ -932,7 +932,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             decodeSuccessData: sse_decode_unit,
             decodeErrorData: sse_decode_AnyhowException,
           ),
-          constMeta: kCrateApiGalileoApiStreamRenderedMapFramesConstMeta,
+          constMeta: kCrateApiMaplibreApiStreamRenderedMapFramesConstMeta,
           argValues: [sessionId, sink],
           apiImpl: this,
         ),
@@ -941,7 +941,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return sink.stream;
   }
 
-  TaskConstMeta get kCrateApiGalileoApiStreamRenderedMapFramesConstMeta =>
+  TaskConstMeta get kCrateApiMaplibreApiStreamRenderedMapFramesConstMeta =>
       const TaskConstMeta(
         debugName: "stream_rendered_map_frames",
         argNames: ["sessionId", "sink"],
@@ -1070,20 +1070,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  GalileoColor dco_decode_galileo_color(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 4)
-      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
-    return GalileoColor(
-      r: dco_decode_f_64(arr[0]),
-      g: dco_decode_f_64(arr[1]),
-      b: dco_decode_f_64(arr[2]),
-      a: dco_decode_f_64(arr[3]),
-    );
-  }
-
-  @protected
   GeoLocation dco_decode_geo_location(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -1178,7 +1164,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       zoomLevel: dco_decode_u_32(arr[1]),
       mapSize: dco_decode_map_size(arr[2]),
       enableMultisampling: dco_decode_bool(arr[3]),
-      backgroundColor: dco_decode_galileo_color(arr[4]),
+      backgroundColor: dco_decode_map_libre_color(arr[4]),
+    );
+  }
+
+  @protected
+  MapLibreColor dco_decode_map_libre_color(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
+    return MapLibreColor(
+      r: dco_decode_f_64(arr[0]),
+      g: dco_decode_f_64(arr[1]),
+      b: dco_decode_f_64(arr[2]),
+      a: dco_decode_f_64(arr[3]),
     );
   }
 
@@ -1288,7 +1288,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     if (arr.length != 2)
       throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
     return PointStyle(
-      fillColor: dco_decode_galileo_color(arr[0]),
+      fillColor: dco_decode_map_libre_color(arr[0]),
       size: dco_decode_f_32(arr[1]),
     );
   }
@@ -1312,8 +1312,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     if (arr.length != 4)
       throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
     return PolygonStyle(
-      fillColor: dco_decode_galileo_color(arr[0]),
-      strokeColor: dco_decode_galileo_color(arr[1]),
+      fillColor: dco_decode_map_libre_color(arr[0]),
+      strokeColor: dco_decode_map_libre_color(arr[1]),
       strokeWidth: dco_decode_f_64(arr[2]),
       strokeOffset: dco_decode_f_64(arr[3]),
     );
@@ -1584,16 +1584,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  GalileoColor sse_decode_galileo_color(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_r = sse_decode_f_64(deserializer);
-    var var_g = sse_decode_f_64(deserializer);
-    var var_b = sse_decode_f_64(deserializer);
-    var var_a = sse_decode_f_64(deserializer);
-    return GalileoColor(r: var_r, g: var_g, b: var_b, a: var_a);
-  }
-
-  @protected
   GeoLocation sse_decode_geo_location(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_latitude = sse_decode_f_64(deserializer);
@@ -1714,7 +1704,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_zoomLevel = sse_decode_u_32(deserializer);
     var var_mapSize = sse_decode_map_size(deserializer);
     var var_enableMultisampling = sse_decode_bool(deserializer);
-    var var_backgroundColor = sse_decode_galileo_color(deserializer);
+    var var_backgroundColor = sse_decode_map_libre_color(deserializer);
     return MapInitConfig(
       latlon: var_latlon,
       zoomLevel: var_zoomLevel,
@@ -1722,6 +1712,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       enableMultisampling: var_enableMultisampling,
       backgroundColor: var_backgroundColor,
     );
+  }
+
+  @protected
+  MapLibreColor sse_decode_map_libre_color(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_r = sse_decode_f_64(deserializer);
+    var var_g = sse_decode_f_64(deserializer);
+    var var_b = sse_decode_f_64(deserializer);
+    var var_a = sse_decode_f_64(deserializer);
+    return MapLibreColor(r: var_r, g: var_g, b: var_b, a: var_a);
   }
 
   @protected
@@ -1836,7 +1836,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   PointStyle sse_decode_point_style(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_fillColor = sse_decode_galileo_color(deserializer);
+    var var_fillColor = sse_decode_map_libre_color(deserializer);
     var var_size = sse_decode_f_32(deserializer);
     return PointStyle(fillColor: var_fillColor, size: var_size);
   }
@@ -1852,8 +1852,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   PolygonStyle sse_decode_polygon_style(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_fillColor = sse_decode_galileo_color(deserializer);
-    var var_strokeColor = sse_decode_galileo_color(deserializer);
+    var var_fillColor = sse_decode_map_libre_color(deserializer);
+    var var_strokeColor = sse_decode_map_libre_color(deserializer);
     var var_strokeWidth = sse_decode_f_64(deserializer);
     var var_strokeOffset = sse_decode_f_64(deserializer);
     return PolygonStyle(
@@ -2132,15 +2132,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_galileo_color(GalileoColor self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_f_64(self.r, serializer);
-    sse_encode_f_64(self.g, serializer);
-    sse_encode_f_64(self.b, serializer);
-    sse_encode_f_64(self.a, serializer);
-  }
-
-  @protected
   void sse_encode_geo_location(GeoLocation self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_f_64(self.latitude, serializer);
@@ -2254,7 +2245,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_u_32(self.zoomLevel, serializer);
     sse_encode_map_size(self.mapSize, serializer);
     sse_encode_bool(self.enableMultisampling, serializer);
-    sse_encode_galileo_color(self.backgroundColor, serializer);
+    sse_encode_map_libre_color(self.backgroundColor, serializer);
+  }
+
+  @protected
+  void sse_encode_map_libre_color(
+    MapLibreColor self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_f_64(self.r, serializer);
+    sse_encode_f_64(self.g, serializer);
+    sse_encode_f_64(self.b, serializer);
+    sse_encode_f_64(self.a, serializer);
   }
 
   @protected
@@ -2349,7 +2352,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   void sse_encode_point_style(PointStyle self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_galileo_color(self.fillColor, serializer);
+    sse_encode_map_libre_color(self.fillColor, serializer);
     sse_encode_f_32(self.size, serializer);
   }
 
@@ -2363,8 +2366,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   void sse_encode_polygon_style(PolygonStyle self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_galileo_color(self.fillColor, serializer);
-    sse_encode_galileo_color(self.strokeColor, serializer);
+    sse_encode_map_libre_color(self.fillColor, serializer);
+    sse_encode_map_libre_color(self.strokeColor, serializer);
     sse_encode_f_64(self.strokeWidth, serializer);
     sse_encode_f_64(self.strokeOffset, serializer);
   }

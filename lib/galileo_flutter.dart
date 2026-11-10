@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 
 export 'package:galileo_flutter/src/map/widget.dart' show GalileoMapWidget;
 
-import 'src/rust/api/galileo_api.dart' as rlib;
+import 'src/rust/api/maplibre_api.dart' as rlib;
 import 'src/rust/frb_generated.dart' as rlib_gen;
 
 export 'package:galileo_flutter/src/rust/api/dart_types.dart'
@@ -22,7 +22,7 @@ export 'package:galileo_flutter/src/rust/api/dart_types.dart'
         MapInitConfig,
         Polygon,
         PolygonStyle,
-        GalileoColor,
+        MapLibreColor,
         Point2,
         Point,
         UserEvent,
@@ -66,7 +66,7 @@ Future<void> initGalileo({String? cachePath}) async {
         ? ExternalLibrary.process(iKnowHowToUseIt: true)
         : null,
   );
-  rlib.galileoFlutterInit(ffiPtr: ffi.NativeApi.initializeApiDLData.address);
+  rlib.maplibreFlutterInit(ffiPtr: ffi.NativeApi.initializeApiDLData.address);
 
   String? tileCachePath = cachePath;
   if (tileCachePath == null) {

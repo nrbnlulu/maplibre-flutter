@@ -12,36 +12,6 @@ part 'dart_types.freezed.dart';
 // These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `Point3`, `PointSymbol`, `PolygonSymbol`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
 
-class GalileoColor {
-  final double r;
-  final double g;
-  final double b;
-  final double a;
-
-  const GalileoColor({
-    required this.r,
-    required this.g,
-    required this.b,
-    required this.a,
-  });
-
-  static Future<GalileoColor> default_() =>
-      RustLib.instance.api.crateApiDartTypesGalileoColorDefault();
-
-  @override
-  int get hashCode => r.hashCode ^ g.hashCode ^ b.hashCode ^ a.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is GalileoColor &&
-          runtimeType == other.runtimeType &&
-          r == other.r &&
-          g == other.g &&
-          b == other.b &&
-          a == other.a;
-}
-
 /// Geographic position with latitude and longitude coordinates.
 class GeoLocation {
   final double latitude;
@@ -159,7 +129,7 @@ class MapInitConfig {
   final bool enableMultisampling;
 
   /// Background color as RGBA (0.0-1.0 range)
-  final GalileoColor backgroundColor;
+  final MapLibreColor backgroundColor;
 
   const MapInitConfig({
     required this.latlon,
@@ -187,6 +157,36 @@ class MapInitConfig {
           mapSize == other.mapSize &&
           enableMultisampling == other.enableMultisampling &&
           backgroundColor == other.backgroundColor;
+}
+
+class MapLibreColor {
+  final double r;
+  final double g;
+  final double b;
+  final double a;
+
+  const MapLibreColor({
+    required this.r,
+    required this.g,
+    required this.b,
+    required this.a,
+  });
+
+  static Future<MapLibreColor> default_() =>
+      RustLib.instance.api.crateApiDartTypesMapLibreColorDefault();
+
+  @override
+  int get hashCode => r.hashCode ^ g.hashCode ^ b.hashCode ^ a.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MapLibreColor &&
+          runtimeType == other.runtimeType &&
+          r == other.r &&
+          g == other.g &&
+          b == other.b &&
+          a == other.a;
 }
 
 /// Physical size of the map in pixels.
@@ -350,7 +350,7 @@ class MouseEvent {
 ///   Point(
 ///     coordinate: GeoLocation(latitude:27.7,longitude:85.3),
 ///     style: PointStyle(
-///       fillColor: GalileoColor(0.2,0.5,0.9,0.8),
+///       fillColor: MapLibreColor(0.2,0.5,0.9,0.8),
 ///       size: 0.8,
 ///     ),
 ///   )
@@ -392,7 +392,7 @@ class Point2 {
 }
 
 class PointStyle {
-  final GalileoColor fillColor;
+  final MapLibreColor fillColor;
   final double size;
 
   const PointStyle({required this.fillColor, required this.size});
@@ -414,8 +414,8 @@ class PointStyle {
 ///   Polygon(
 ///     points: [...],
 ///     style: PolygonStyle(
-///       fillColor: GalileoColor(0.2,0.5,0.9,0.8),
-///       strokeColor: GalileoColor(1.0,1.0,1.0,1.0),
+///       fillColor: MapLibreColor(0.2,0.5,0.9,0.8),
+///       strokeColor: MapLibreColor(1.0,1.0,1.0,1.0),
 ///       strokeWidth: 2.0,
 ///       strokeOffset: 0.0,
 ///     ),
@@ -440,10 +440,10 @@ class Polygon {
 
 class PolygonStyle {
   /// fillColor also as RGBA (0.0-1.0 range)
-  final GalileoColor fillColor;
+  final MapLibreColor fillColor;
 
   /// fillColor also as RGBA (0.0-1.0 range)
-  final GalileoColor strokeColor;
+  final MapLibreColor strokeColor;
 
   /// strokeWidth with (0.0-1.0 range)
   final double strokeWidth;

@@ -156,7 +156,7 @@ pub struct MapInitConfig {
     /// Enable multisampling anti-aliasing
     pub enable_multisampling: bool,
     /// Background color as RGBA (0.0-1.0 range)
-    pub background_color: GalileoColor,
+    pub background_color: MapLibreColor,
 }
 
 /// Layer configuration for different types of map layers.
@@ -192,8 +192,8 @@ pub enum LayerConfig {
 ///   Polygon(
 ///     points: [...],
 ///     style: PolygonStyle(
-///       fillColor: GalileoColor(0.2,0.5,0.9,0.8),
-///       strokeColor: GalileoColor(1.0,1.0,1.0,1.0),
+///       fillColor: MapLibreColor(0.2,0.5,0.9,0.8),
+///       strokeColor: MapLibreColor(1.0,1.0,1.0,1.0),
 ///       strokeWidth: 2.0,
 ///       strokeOffset: 0.0,
 ///     ),
@@ -207,9 +207,9 @@ pub struct Polygon {
 #[derive(Clone, Debug, PartialEq, Default)]
 pub struct PolygonStyle {
     /// fillColor also as RGBA (0.0-1.0 range)
-    pub fill_color: GalileoColor,
+    pub fill_color: MapLibreColor,
     /// fillColor also as RGBA (0.0-1.0 range)
-    pub stroke_color: GalileoColor,
+    pub stroke_color: MapLibreColor,
     /// strokeWidth with (0.0-1.0 range)
     pub stroke_width: f64,
     /// strokeOffset with (0.0-1.0 range)
@@ -224,7 +224,7 @@ pub struct PolygonSymbol {}
 ///   Point(
 ///     coordinate: GeoLocation(latitude:27.7,longitude:85.3),
 ///     style: PointStyle(
-///       fillColor: GalileoColor(0.2,0.5,0.9,0.8),
+///       fillColor: MapLibreColor(0.2,0.5,0.9,0.8),
 ///       size: 0.8,
 ///     ),
 ///   )
@@ -236,7 +236,7 @@ pub struct Point {
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct PointStyle {
-    pub fill_color: GalileoColor,
+    pub fill_color: MapLibreColor,
     pub size: f32,
 }
 
@@ -245,7 +245,7 @@ pub struct PointSymbol {}
 
 // Manual type definitions for Dart-friendly versions
 #[derive(Debug, Clone, Copy, PartialEq, Default)]
-pub struct GalileoColor {
+pub struct MapLibreColor {
     pub r: f64,
     pub g: f64,
     pub b: f64,

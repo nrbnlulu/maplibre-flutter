@@ -25,7 +25,7 @@ use parking_lot::Mutex;
 use serde_json::{json, Value};
 
 use crate::api::dart_types::{
-    GalileoColor, GeoLocation, MapSize, MapViewport, MouseButton, RenderedMapFrame, UserEvent,
+    MapLibreColor, GeoLocation, MapSize, MapViewport, MouseButton, RenderedMapFrame, UserEvent,
 };
 use crate::core::camera::Camera;
 
@@ -106,7 +106,7 @@ pub struct MapThreadConfig {
     pub center: GeoLocation,
     pub zoom: f64,
     pub size: MapSize,
-    pub background: GalileoColor,
+    pub background: MapLibreColor,
     pub cache_path: Option<PathBuf>,
 }
 
@@ -240,7 +240,7 @@ struct FrameStats {
     slowest_micros: u128,
 }
 
-fn default_style(background: &GalileoColor) -> String {
+fn default_style(background: &MapLibreColor) -> String {
     json!({
         "version": 8,
         "name": "galileo_flutter",
@@ -254,7 +254,7 @@ fn default_style(background: &GalileoColor) -> String {
     .to_string()
 }
 
-pub fn css_color(color: &GalileoColor) -> String {
+pub fn css_color(color: &MapLibreColor) -> String {
     let channel = |v: f64| (v.clamp(0.0, 1.0) * 255.0).round() as u8;
     format!(
         "rgba({},{},{},{})",
@@ -713,7 +713,7 @@ impl MapState {
         };
         if let Err(err) = loaded {
             error!("failed to load base style, falling back to an empty style: {err}");
-            let fallback = default_style(&GalileoColor::default());
+            let fallback = default_style(&MapLibreColor::default());
             if let Err(err) = self.renderer.load_style_from_json_str(&fallback).wait() {
                 error!("failed to load fallback style: {err}");
                 return;

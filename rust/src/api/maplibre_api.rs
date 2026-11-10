@@ -13,12 +13,12 @@ use crate::core::map_session::{MapSession, SessionID};
 use crate::core::{init_logger, IS_INITIALIZED, SESSIONS, TILE_CACHE_PATH, TOKIO_HANDLE};
 
 #[frb(init)]
-pub fn init_galileo_flutter() {
+pub fn init_maplibre_flutter() {
     flutter_rust_bridge::setup_default_user_utils();
 }
 
 /// Initialize the Galileo Flutter plugin runtime.
-pub fn galileo_flutter_init(_ffi_ptr: i64) {
+pub fn maplibre_flutter_init(_ffi_ptr: i64) {
     if IS_INITIALIZED.load(Ordering::SeqCst) {
         return;
     }

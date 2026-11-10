@@ -1490,7 +1490,7 @@ as Point2,
 
 class UserEvent_ZoomImmediate extends UserEvent {
   const UserEvent_ZoomImmediate(this.field0, this.field1): super._();
-
+  
 
 @override final  double field0;
  final  Point2 field1;
