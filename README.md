@@ -1,6 +1,10 @@
 # MapLibre Flutter
 
-Flutter widgets and controllers backed by MapLibre Native through a Rust FFI bridge.
+Flutter widgets and controllers backed by MapLibre Native through
+[flutter_rust_bridge (FRB)](https://cjycode.com/flutter_rust_bridge/), which
+generates the Dart/Rust bindings. Rendering uses
+[rlutter](https://github.com/nrbnlulu/flutter), a Flutter Rust shell that provides
+the GPU device and texture integration.
 
 ```dart
 import 'package:maplibre_flutter/maplibre_flutter.dart';
@@ -36,9 +40,13 @@ The codegen Flutter SDK probe defaults to rlutter's cached Flutter SDK; set
 
 ## Using the Rust implementation in an application-owned bridge
 
-The default Cargo feature `standalone-frb` retains the package's own generated
-FRB entrypoints and Dart bindings. Existing standalone Dart callers continue
-to use `initMapLibre()` and the existing map widget/controller API.
+The default Cargo feature `standalone-frb` enables this package's own generated
+FRB dispatcher and stream entrypoint. This is a feature defined by this crate,
+not a built-in FRB mode. In this README, "standalone" means that MapLibre owns
+its Dart/Rust bridge and can be used independently of an application-owned hub.
+Dart callers initialize that bridge with `initMapLibre()` and use the supplied
+map widgets and controllers. Standalone use still requires rlutter's shell SDK
+and GPU/texture integration; it does not mean support for every Flutter shell.
 
 An application that owns its own FRB bridge can consume the implementation:
 
@@ -53,8 +61,14 @@ its bridge initialization, DTO conversion and Dart adapters. Disabling the
 feature excludes MapLibre's generated FRB dispatcher and sink-based frame
 stream entrypoint. `rendered_map_frames(session_id)` instead returns a Tokio
 watch receiver that the application can adapt to its own generated sink.
-Other map APIs and Rust models remain available. No T5hob dependencies are
-required by this repository.
+Other map APIs and Rust models remain available. FRB remains a Rust dependency
+for the API annotations and supporting types; disabling `standalone-frb` does
+not remove FRB from the dependency graph. The consuming application generates
+and initializes its own bridge and routes its Dart adapters through that bridge.
+This prevents the MapLibre standalone dispatcher from being linked alongside
+the hub's dispatcher in the same native runner. MapLibre still needs rlutter's
+GPU/texture SDK, and the hub must register its capabilities once. No T5hob
+dependencies are required by this repository.
 
 Cargo features are additive: every dependency on this crate in the application
 must leave `standalone-frb` disabled. Another dependency enabling the default
