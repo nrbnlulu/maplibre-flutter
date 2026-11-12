@@ -894,8 +894,8 @@ dependencies = [
 
 [[package]]
 name = "flutter_rust_bridge"
-version = "2.14.0-beta.2"
-source = "git+https://github.com/shri-acha/flutter_rust_bridge.git?rev=978c47169af25415faa02642d8fb8a0c4d14bce8#978c47169af25415faa02642d8fb8a0c4d14bce8"
+version = "2.13.0"
+source = "git+https://github.com/shri-acha/flutter_rust_bridge.git?rev=334e4e3234c782b7c7bf221f1866440b6b7627ef#334e4e3234c782b7c7bf221f1866440b6b7627ef"
 dependencies = [
  "allo-isolate",
  "android_logger",
@@ -922,8 +922,8 @@ dependencies = [
 
 [[package]]
 name = "flutter_rust_bridge_macros"
-version = "2.14.0-beta.2"
-source = "git+https://github.com/shri-acha/flutter_rust_bridge.git?rev=978c47169af25415faa02642d8fb8a0c4d14bce8#978c47169af25415faa02642d8fb8a0c4d14bce8"
+version = "2.13.0"
+source = "git+https://github.com/shri-acha/flutter_rust_bridge.git?rev=334e4e3234c782b7c7bf221f1866440b6b7627ef#334e4e3234c782b7c7bf221f1866440b6b7627ef"
 dependencies = [
  "hex",
  "md-5",
