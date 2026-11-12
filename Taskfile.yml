@@ -82,8 +82,8 @@ tasks:
         desc: Generate standalone MapLibre FRB bindings and Dart models
         cmds:
             - sh tool/codegen.sh
-            - python3 tool/namespace-frb.py
             - rlutter dart run build_runner build
+            - rlutter dart format lib/src/rust
 
     run:
         desc: Run the standalone example using the cached native core

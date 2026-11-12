@@ -37,6 +37,7 @@ export 'package:maplibre_flutter/src/overlay/polygon/polygon_draw_controller.dar
 export 'package:maplibre_flutter/src/overlay/polygon/polygon_edit_controller.dart';
 export 'package:maplibre_flutter/src/overlay/polygon/overlay_polygon.dart';
 export 'package:maplibre_flutter/src/layer/controller.dart';
+export 'package:maplibre_flutter/src/layer/line_layer.dart';
 export 'package:maplibre_flutter/src/widgets/polygon_overlay.dart';
 export 'package:maplibre_flutter/src/widgets/cluster/cluster_controller.dart';
 export 'package:maplibre_flutter/src/widgets/cluster/cluster_overlay.dart';
@@ -72,7 +73,8 @@ Future<void> initMapLibre({String? cachePath}) async {
   if (tileCachePath == null) {
     try {
       final cacheDir = await getApplicationCacheDirectory();
-      tileCachePath = '${cacheDir.path}/tile_cache';
+      await cacheDir.create(recursive: true);
+      tileCachePath = '${cacheDir.path}/maplibre_tiles.sqlite';
     } catch (e) {
       tileCachePath = null;
     }

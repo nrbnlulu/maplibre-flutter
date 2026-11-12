@@ -105,6 +105,8 @@ pub struct Shared {
 pub struct MapThreadConfig {
     pub center: GeoLocation,
     pub zoom: f64,
+    pub min_zoom: f64,
+    pub max_zoom: f64,
     pub size: MapSize,
     pub background: MapLibreColor,
     pub cache_path: Option<PathBuf>,
@@ -208,6 +210,8 @@ struct MapState {
     rasters: Vec<RasterSpec>,
     geo: BTreeMap<u32, GeoLayer>,
     camera: Camera,
+    min_zoom: f64,
+    max_zoom: f64,
     camera_dirty: bool,
     size: MapSize,
     texture: Option<WgpuTexture>,
@@ -351,6 +355,8 @@ impl MapState {
             rasters: Vec::new(),
             geo: BTreeMap::new(),
             camera: Camera::new(config.center, config.zoom),
+            min_zoom: config.min_zoom,
+            max_zoom: config.max_zoom.max(config.min_zoom),
             camera_dirty: false,
             size: config.size,
             texture: Some(texture),
@@ -446,8 +452,15 @@ impl MapState {
                 self.reload_style();
             }
             Command::AddRaster(spec) => {
-                self.apply_raster(&spec);
-                self.rasters.push(spec);
+                let replaces = self.rasters.iter().any(|raster| raster.id == spec.id);
+                if replaces {
+                    self.rasters.retain(|raster| raster.id != spec.id);
+                    self.rasters.push(spec);
+                    self.reload_style();
+                } else {
+                    self.apply_raster(&spec);
+                    self.rasters.push(spec);
+                }
             }
             Command::AddGeoLayer { id, kind, features } => {
                 self.geo.insert(id, GeoLayer { kind, features });
@@ -533,6 +546,35 @@ impl MapState {
                 self.release_drag(event.timestamp_micros)
             }
             UserEvent::ZoomAnimated(factor, point) => self.request_zoom(factor, point.x, point.y),
+            UserEvent::CameraMove {
+                center,
+                zoom,
+                duration_millis,
+            } => {
+                if !zoom.is_finite() {
+                    return;
+                }
+                self.stop_native_animation();
+                let zoom = (zoom - 1.0).clamp(self.min_zoom, self.max_zoom);
+                if duration_millis == 0 {
+                    self.camera = Camera::new(center, zoom);
+                    self.apply_camera();
+                    return;
+                }
+                self.renderer.ease_camera(
+                    &CameraUpdate::new()
+                        .center(LatLng {
+                            lat: center.latitude,
+                            lng: center.longitude,
+                        })
+                        .zoom(zoom),
+                    Duration::from_millis(u64::from(duration_millis)),
+                );
+                self.native_animation_until =
+                    Some(Instant::now() + Duration::from_millis(u64::from(duration_millis)));
+                self.zoom_target = Some(zoom);
+                self.needs_frame.store(true, Ordering::Release);
+            }
             UserEvent::ZoomImmediate(factor, point) => {
                 if factor.is_finite() && factor > 0.0 {
                     self.stop_native_animation();
@@ -631,8 +673,7 @@ impl MapState {
         }
         let base = self.zoom_target.unwrap_or(self.camera.zoom);
         self.stop_native_animation();
-        let zoom = (base - factor.log2())
-            .clamp(crate::core::camera::MIN_ZOOM, crate::core::camera::MAX_ZOOM);
+        let zoom = (base - factor.log2()).clamp(self.min_zoom, self.max_zoom);
         self.renderer.ease_camera(
             &CameraUpdate::new()
                 .zoom(zoom)

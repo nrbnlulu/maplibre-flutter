@@ -126,11 +126,12 @@ packages:
   flutter_rust_bridge:
     dependency: transitive
     description:
-      name: flutter_rust_bridge
-      sha256: ec69331e2335ab4d456c0a9fc700892c2c85b72b9c0cb39df3ecfe8833d5d5c8
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.13.0"
+      path: frb_dart
+      ref: "978c47169af25415faa02642d8fb8a0c4d14bce8"
+      resolved-ref: "978c47169af25415faa02642d8fb8a0c4d14bce8"
+      url: "https://github.com/shri-acha/flutter_rust_bridge.git"
+    source: git
+    version: "2.14.0-beta.2"
   flutter_test:
     dependency: "direct dev"
     description: flutter

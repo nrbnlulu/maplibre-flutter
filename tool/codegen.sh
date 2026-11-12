@@ -42,6 +42,6 @@ fi
 exec rlutter dart "$@"
 SH
 chmod +x "$bridge_tools/flutter" "$bridge_tools/fvm"
-PATH="$bridge_tools:$PATH" flutter_rust_bridge_codegen generate
+PATH="$bridge_tools:$PATH" "${FRB_CODEGEN_BIN:-flutter_rust_bridge_codegen}" generate --no-auto-upgrade-dependency
 
 bridge_bootstrap=0

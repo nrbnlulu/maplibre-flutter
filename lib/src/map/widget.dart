@@ -401,11 +401,13 @@ class _MapLibreMapWidgetState extends State<MapLibreMapWidget> {
       },
       onPointerSignal: (event) {
         if (event is PointerScrollEvent) {
-          const zoomSensitivity = 0.002;
-          final zoomFactor = math
-              .pow(1.0 - zoomSensitivity, -event.scrollDelta.dy)
-              .toDouble();
-          _sendZoomEvent(zoomFactor, event.localPosition);
+          GestureBinding.instance.pointerSignalResolver.register(event, (_) {
+            const zoomSensitivity = 0.002;
+            final zoomFactor = math
+                .pow(1.0 - zoomSensitivity, -event.scrollDelta.dy)
+                .toDouble();
+            _sendZoomEvent(zoomFactor, event.localPosition);
+          });
         }
       },
       onPointerMove: (event) {

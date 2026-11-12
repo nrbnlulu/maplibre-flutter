@@ -4,7 +4,7 @@
 //! managing MapLibre maps in Flutter applications with real texture rendering.
 
 #[cfg(feature = "standalone-frb")]
-use crate::frb_generated::StreamSink;
+use crate::bridge_sink::StreamSink;
 use flutter_rust_bridge::frb;
 use log::{debug, info};
 use std::sync::atomic::Ordering;
@@ -230,7 +230,6 @@ pub async fn stream_rendered_map_frames(
             return Ok(());
         }
     }
-
     while frames.changed().await.is_ok() {
         if let Some(frame) = frames.borrow_and_update().as_ref().copied() {
             if sink.add(frame).is_err() {
@@ -241,8 +240,6 @@ pub async fn stream_rendered_map_frames(
     Ok(())
 }
 
-/// Subscribe to rendered frames without depending on a generated FRB sink.
-/// Application-owned bridges can adapt this receiver to their own stream API.
 #[flutter_rust_bridge::frb(ignore)]
 pub async fn rendered_map_frames(
     session_id: SessionID,

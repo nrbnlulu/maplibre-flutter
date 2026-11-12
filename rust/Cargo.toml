@@ -11,7 +11,7 @@ default = ["standalone-frb"]
 standalone-frb = []
 
 [dependencies]
-flutter_rust_bridge = "=2.13.0"
+flutter_rust_bridge = { git = "https://github.com/shri-acha/flutter_rust_bridge.git", rev = "978c47169af25415faa02642d8fb8a0c4d14bce8" }
 flutter-plugin-sdk = "0.1.0"
 # The SDK re-exports its own wgpu (30.0.0). Depending on the same revision and
 # enabling the `wgsl` feature keeps shader compilation available when the

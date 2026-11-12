@@ -12,7 +12,36 @@ import 'package:maplibre_flutter/maplibre_flutter.dart';
 await initMapLibre();
 ```
 
-The public map APIs are `MapLibreMapWidget`, `MapLibreMapController`, `MapLibreMapState`, and `MapLibreColor`. See the example app for configuration and overlays.
+The public map APIs include `MapLibreMapWidget`, `MapLibreMapController`,
+`MapLibreLineLayer`, `MapLibreMapState`, and `MapLibreColor`. Camera moves animate
+through MapLibre Native. Initial zoom supports fractional values and per-map
+minimum/maximum zoom. Raster base URL changes replace the previous source;
+projected line overlays support opacity, casing, and dash patterns. Wheel zoom
+claims pointer signals so an enclosing scroll view does not scroll too.
+
+## Experimental independent bridge
+
+This branch pins the Rust and Dart runtimes to
+[shri-acha/flutter_rust_bridge, revision 978c471](https://github.com/shri-acha/flutter_rust_bridge/tree/978c47169af25415faa02642d8fb8a0c4d14bce8),
+version `2.14.0-beta.2`. Its supported `native_symbol_prefix` configuration sets
+`maplibre_flutter_` on this package's hash, dispatchers, and callback delivery.
+Another FRB plugin can own its bridge in the same rlutter executable when it
+uses a different prefix and a compatible shared Rust/Dart runtime. Register each
+plugin once and initialize each generated Dart bridge separately.
+
+Use the same Git FRB Dart dependency (or a matching root dependency override)
+and Rust runtime revision for every bridge linked into the executable. This
+package's Dart API does not depend on an application-owned hub. The old vendored
+Dart runtime and handwritten namespace script are not used on this branch.
+
+Install the matching generator with:
+
+```sh
+cargo install --git https://github.com/shri-acha/flutter_rust_bridge.git --rev 978c47169af25415faa02642d8fb8a0c4d14bce8 --locked flutter_rust_bridge_codegen
+```
+
+`FRB_CODEGEN_BIN` can select an already-built matching generator for
+`go-task codegen`. Regenerate Rust and Dart together after native API changes.
 
 ## Architecture
 
@@ -32,7 +61,7 @@ SDK. Run `go-task mln-core` from this checkout to prepare the native core cache,
 then `go-task run` to launch the Linux example. The cache is local to this
 checkout; Android requires target-specific native artifacts and SDK setup.
 
-Run `go-task codegen` after changing the public bridge API. It uses FRB 2.13.0,
+Run `go-task codegen` after changing the public bridge API. It uses FRB 2.14.0-beta.2,
 regenerates the standalone bindings and Freezed models, and preserves dependency
 metadata. Run `rlutter dart analyze lib example/lib` to check Dart consumers.
 The codegen Flutter SDK probe defaults to rlutter's cached Flutter SDK; set
@@ -91,7 +120,8 @@ Dart adapters, not just disabling a Cargo feature.
 - Application-owned bridges must update their own DTOs, conversions, wrapper
   functions and Dart exports when they adopt new implementation APIs. Their
   bindings are generated in the consuming application, not in this package.
-- Keep generated dispatch edits out of handwritten code. The standalone bridge retains its package-prefixed exports and vendored
-  2.13.0 Dart runtime; `go-task codegen` reapplies that namespace after generation.
+- Keep generated dispatch edits out of handwritten code. The standalone bridge
+  uses the generator's `native_symbol_prefix`; codegen produces the matching
+  native exports and Dart lookups without a post-generation namespace patch.
   Application-owned bridges exclude the standalone dispatcher with
   `default-features = false`.
