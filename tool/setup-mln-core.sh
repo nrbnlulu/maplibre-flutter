@@ -9,6 +9,11 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CACHE="$ROOT/.cache/mln-core"
 MLN_RELEASE="core-a33d3f00fb9dbf9117ce18edd799aa0ca5bcce5b"
 CARGO_HOME_DIR="${CARGO_HOME:-$HOME/.cargo}"
+SDK_MANIFEST="$ROOT/example/.dart_tool/flutter_rs/sdk/crates/flutter-plugin-sdk/Cargo.toml"
+if [ ! -f "$SDK_MANIFEST" ]; then
+  echo "error: prepare the example SDK with 'cd example && rlutter dart pub get' first." >&2
+  exit 1
+fi
 
 mkdir -p "$CACHE" "$CACHE/vendor/maplibre-tile-spec/cpp" "$CACHE/webgpu-cpp" "$CACHE/src"
 
@@ -28,10 +33,11 @@ if [ ! -f "$CACHE/libmbgl-core.a" ]; then
   trap 'rm -rf "$scratch"' EXIT
   (
     cd "$scratch"
-    MLN_CORE_LIBRARY_USE_AMALGAM=0 cargo build --manifest-path "$ROOT/rust/Cargo.toml"
+    MLN_PRECOMPILE=0 MLN_SYSTEM=0 MLN_CORE_LIBRARY_USE_AMALGAM=0 \
+      cargo build --manifest-path "$ROOT/rust/Cargo.toml" --package maplibre_native
   )
 
-  core="$(find "$ROOT/rust/target" -type f -name 'libmbgl-core.a' | head -1)"
+  core="$(find "$ROOT/rust/target" -type f -name 'libmbgl-core.a' -print -quit)"
   if [ -z "$core" ]; then
     echo "error: the source build did not produce libmbgl-core.a" >&2
     exit 1
@@ -48,7 +54,7 @@ fi
 
 # Locate an existing build directory (the one-time build may already have run).
 if [ -z "${build_dir:-}" ]; then
-  core="$(find "$ROOT/rust/target" "$ROOT/example/runner-rs/target" -type f -name 'libmbgl-core.a' 2>/dev/null | head -1)"
+  core="$(find "$ROOT/rust/target" "$ROOT/example/runner-rs/target" -type f -name 'libmbgl-core.a' -print -quit 2>/dev/null || true)"
   if [ -n "$core" ]; then
     build_dir="$(dirname "$core")"
   fi
@@ -62,7 +68,7 @@ fi
 # The public header archive omits internal src/ headers, so cache them from the
 # maplibre-native checkout that cargo cloned during the source build.
 if [ ! -f "$CACHE/src/mln/gfx/offscreen_texture.hpp" ]; then
-  mln_src="$(find "$CARGO_HOME_DIR/git/checkouts" -type d -path '*/maplibre-native-rs-*/*/target/maplibre-native/src' 2>/dev/null | head -1)"
+  mln_src="$(find "$CARGO_HOME_DIR/git/checkouts" -type d -path '*/maplibre-native-rs-*/*/target/maplibre-native/src' -print -quit 2>/dev/null || true)"
   if [ -n "$mln_src" ]; then
     cp -r "$mln_src/." "$CACHE/src/"
   else

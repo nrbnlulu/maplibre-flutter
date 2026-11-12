@@ -23,6 +23,8 @@ final _kMapConfig = MapInitConfig(
   latlon: GeoLocation(latitude: 0.0, longitude: 0.0),
   mapSize: _kMapSize,
   zoomLevel: 5,
+  minZoom: 2,
+  maxZoom: 20,
 );
 
 enum DrawMode { point, polygon }

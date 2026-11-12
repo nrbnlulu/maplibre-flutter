@@ -895,8 +895,7 @@ dependencies = [
 [[package]]
 name = "flutter_rust_bridge"
 version = "2.13.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "24a973d15b8fc7de9fb29cdfbec58a2ac41f6252492d3b882abfdc603e32b34f"
+source = "git+https://github.com/shri-acha/flutter_rust_bridge.git?rev=334e4e3234c782b7c7bf221f1866440b6b7627ef#334e4e3234c782b7c7bf221f1866440b6b7627ef"
 dependencies = [
  "allo-isolate",
  "android_logger",
@@ -924,8 +923,7 @@ dependencies = [
 [[package]]
 name = "flutter_rust_bridge_macros"
 version = "2.13.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "901eec2d226107dad1c55b30f7421c4687bebcf70ed43ca44d1b447ca087b238"
+source = "git+https://github.com/shri-acha/flutter_rust_bridge.git?rev=334e4e3234c782b7c7bf221f1866440b6b7627ef#334e4e3234c782b7c7bf221f1866440b6b7627ef"
 dependencies = [
  "hex",
  "md-5",

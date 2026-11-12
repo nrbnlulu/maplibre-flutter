@@ -9,6 +9,8 @@ final _mapConfig = MapInitConfig(
   latlon: const GeoLocation(latitude: 40.71, longitude: -74.01),
   mapSize: _mapSize,
   zoomLevel: 5,
+  minZoom: 2,
+  maxZoom: 20,
 );
 
 Future<void> main() async {

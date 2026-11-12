@@ -1,20 +1,7 @@
 version: "3"
 
 vars:
-    DART_BIN:
-        sh: |
-            if command -v fvm &> /dev/null; then
-              echo "fvm dart"
-            else
-              echo "dart"
-            fi
-    FLUTTER_BIN:
-        sh: |
-            if command -v fvm &> /dev/null; then
-              echo "fvm flutter"
-            else
-              echo "flutter"
-            fi
+    DART_BIN: "rlutter dart"
 
 tasks:
     # --- Rust tasks ---
@@ -73,7 +60,7 @@ tasks:
     flutter.lint:
         desc: Run Flutter analyzer
         cmds:
-            - "{{.FLUTTER_BIN}} analyze ./example ./lib"
+            - "{{.DART_BIN}} analyze lib example/lib"
 
     flutter.fix:
         desc: Fix all Dart code issues and format
@@ -84,18 +71,32 @@ tasks:
     flutter.test:
         desc: Run Flutter tests
         cmds:
-            - "{{.FLUTTER_BIN}} test"
+            - "{{.DART_BIN}} test"
 
     flutter.get:
         desc: Get Flutter dependencies
         cmds:
-            - "{{.FLUTTER_BIN}} pub get"
+            - "{{.DART_BIN}} pub get"
 
     codegen:
-        desc: generate rust bindings
+        desc: Generate standalone MapLibre FRB bindings and Dart models
         cmds:
-            - rm -rf .dart_tool
-            - flutter_rust_bridge_codegen generate
+            - sh tool/codegen.sh
+            - rlutter dart run build_runner build
+            - rlutter dart format lib/src/rust
+
+    run:
+        desc: Run the standalone example using the cached native core
+        dir: example
+        env:
+            MLN_PRECOMPILE: "1"
+            MLN_CORE_LIBRARY_USE_AMALGAM: "0"
+            MLN_CORE_LIBRARY_PATH: '{{.ROOT_DIR}}/.cache/mln-core/libmbgl-core.a'
+            MLN_CORE_LIBRARY_HEADERS_PATH: '{{.ROOT_DIR}}/.cache/mln-core/maplibre-native-headers.tar.gz'
+            MLN_WEBGPU_CPP_INCLUDE_DIR: '{{.ROOT_DIR}}/.cache/mln-core/webgpu-cpp'
+            MLN_CORE_SRC_INCLUDE_DIR: '{{.ROOT_DIR}}/.cache/mln-core/src'
+        cmds:
+            - rlutter run --device linux {{.CLI_ARGS}}
 
     # --- Combined tasks ---
     fix:

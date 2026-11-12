@@ -3,7 +3,8 @@
 //! This module provides the interface between Dart and Rust for
 //! managing MapLibre maps in Flutter applications with real texture rendering.
 
-use crate::frb_generated::StreamSink;
+#[cfg(feature = "standalone-frb")]
+use crate::bridge_sink::StreamSink;
 use flutter_rust_bridge::frb;
 use log::{debug, info};
 use std::sync::atomic::Ordering;
@@ -218,24 +219,17 @@ pub async fn get_map_viewport(session_id: SessionID) -> Option<MapViewport> {
 ///
 /// The underlying watch channel keeps only the newest frame so Flutter cannot
 /// build up stale overlay updates while the map is moving.
+#[cfg(feature = "standalone-frb")]
 pub async fn stream_rendered_map_frames(
     session_id: SessionID,
     sink: StreamSink<RenderedMapFrame>,
 ) -> anyhow::Result<()> {
-    let session = SESSIONS
-        .lock()
-        .get(&session_id)
-        .cloned()
-        .ok_or_else(|| anyhow::anyhow!("Session {} not found", session_id))?;
-    let mut frames = session.subscribe_rendered_frames();
-    drop(session);
-
+    let mut frames = rendered_map_frames(session_id).await?;
     if let Some(frame) = frames.borrow_and_update().as_ref().copied() {
         if sink.add(frame).is_err() {
             return Ok(());
         }
     }
-
     while frames.changed().await.is_ok() {
         if let Some(frame) = frames.borrow_and_update().as_ref().copied() {
             if sink.add(frame).is_err() {
@@ -244,6 +238,20 @@ pub async fn stream_rendered_map_frames(
         }
     }
     Ok(())
+}
+
+#[flutter_rust_bridge::frb(ignore)]
+pub async fn rendered_map_frames(
+    session_id: SessionID,
+) -> anyhow::Result<tokio::sync::watch::Receiver<Option<RenderedMapFrame>>> {
+    let session = SESSIONS
+        .lock()
+        .get(&session_id)
+        .cloned()
+        .ok_or_else(|| anyhow::anyhow!("Session {} not found", session_id))?;
+    let frames = session.subscribe_rendered_frames();
+    drop(session);
+    Ok(frames)
 }
 
 /// Enqueue input without a Dart-to-Rust async round trip for every pointer move.
