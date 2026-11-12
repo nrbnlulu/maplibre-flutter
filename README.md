@@ -33,8 +33,9 @@ plugin once and initialize each generated Dart bridge separately.
 
 Use the same Git FRB Dart dependency (or a matching root dependency override)
 and Rust runtime revision for every bridge linked into the executable. This
-package's Dart API does not depend on an application-owned hub. The old vendored
-Dart runtime and handwritten namespace script are not used on this branch.
+package's Dart API does not depend on an application-owned hub. FRB is resolved
+from the pinned remote Git dependency; the vendored Dart runtime and handwritten
+namespace script have been removed.
 
 Install the matching generator with:
 
