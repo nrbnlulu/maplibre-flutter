@@ -570,7 +570,9 @@ class _MapLibreMapWidgetState extends State<MapLibreMapWidget> {
         final scale = _devicePixelRatio;
         widget.controller.handleEvent(
           UserEvent.rotate(
-            rotationDelta * 180 / math.pi,
+            // Flutter twist is clockwise on screen; increasing camera bearing
+            // rotates the map counterclockwise beneath the camera.
+            -rotationDelta * 180 / math.pi,
             Point2(x: focal.dx * scale, y: focal.dy * scale),
           ),
         );
