@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:maplibre_flutter/maplibre_flutter.dart';
-import 'package:maplibre_flutter/src/utils.dart';
 
 const _kVertexR = 11.0;
 const _kMidpointR = 8.0;
@@ -67,20 +66,16 @@ class PolygonEditOverlayPainter extends CustomPainter {
     if (vertices.isEmpty) return;
     canvas.clipRect(Offset.zero & size);
 
-    final pts = geosToOffsets(vertices, size, viewport);
+    final projection = MapLibrePathProjection(viewport: viewport, size: size);
+    final pts = vertices.map(projection.projectPoint).toList();
 
     if (pts.length >= 3) {
-      final path = Path()..moveTo(pts[0].dx, pts[0].dy);
-      for (int i = 1; i < pts.length; i++) {
-        path.lineTo(pts[i].dx, pts[i].dy);
-      }
-      path.close();
+      final path = projection.projectPolygon(vertices);
       canvas.drawPath(path, _fillPaint(const Color(0x22FFFFFF)));
       canvas.drawPath(path, _strokePaint(const Color(0xCCFFFFFF), 1.5));
     } else if (pts.length == 2) {
-      canvas.drawLine(
-        pts[0],
-        pts[1],
+      canvas.drawPath(
+        projection.projectPolyline(vertices),
         _strokePaint(const Color(0xCCFFFFFF), 1.5),
       );
     }
@@ -88,6 +83,7 @@ class PolygonEditOverlayPainter extends CustomPainter {
     for (int i = 0; i < pts.length; i++) {
       final a = pts[i];
       final b = pts[(i + 1) % pts.length];
+      if (a == null || b == null) continue;
       final mid = Offset((a.dx + b.dx) / 2, (a.dy + b.dy) / 2);
 
       _drawHandle(canvas, mid, _kMidpointR, _kHandleRed);
@@ -96,6 +92,7 @@ class PolygonEditOverlayPainter extends CustomPainter {
 
     for (int i = 0; i < pts.length; i++) {
       final pt = pts[i];
+      if (pt == null) continue;
       final isDragging = i == draggingVertexIndex;
 
       _drawHandle(
@@ -131,31 +128,26 @@ class PendingPolygonPainter extends CustomPainter {
     if (vertices.isEmpty) return;
     canvas.clipRect(Offset.zero & size);
 
-    final pts = geosToOffsets(vertices, size, viewport);
+    final projection = MapLibrePathProjection(viewport: viewport, size: size);
+    final pts = vertices.map(projection.projectPoint).toList();
 
     if (pts.length >= 3) {
-      final path = Path()..moveTo(pts[0].dx, pts[0].dy);
-      for (int i = 1; i < pts.length; i++) {
-        path.lineTo(pts[i].dx, pts[i].dy);
-      }
-      path.close();
+      final path = projection.projectPolygon(vertices);
       canvas.drawPath(path, _fillPaint(const Color(0x4400BFFF)));
     }
 
     if (pts.length >= 2) {
       final edgePaint = _strokePaint(const Color(0xFF0288D1), 2.0);
-      for (int i = 0; i < pts.length - 1; i++) {
-        canvas.drawLine(pts[i], pts[i + 1], edgePaint);
-      }
-      canvas.drawLine(
-        pts.last,
-        pts.first,
+      canvas.drawPath(projection.projectPolyline(vertices), edgePaint);
+      canvas.drawPath(
+        projection.projectPolyline([vertices.last, vertices.first]),
         _strokePaint(const Color(0x880288D1), 1.5),
       );
     }
 
     for (int i = 0; i < pts.length; i++) {
       final pt = pts[i];
+      if (pt == null) continue;
       final isDragging = i == draggingVertexIndex;
 
       _drawHandle(

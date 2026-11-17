@@ -6,6 +6,7 @@ import 'package:maplibre_flutter/src/map/controller.dart'
     show MapLibreMapController;
 import 'package:maplibre_flutter/src/rust/api/dart_types.dart'
     show GeoLocation, MapViewport;
+import '../projection/path_projection.dart';
 
 /// A geographic line rendered above the native map texture.
 class MapLibreLine {
@@ -70,30 +71,13 @@ class _LinePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final geographic = [
-      for (final line in lines)
+    final projection = MapLibrePathProjection(viewport: viewport, size: size);
+    for (final line in lines) {
+      if (line.points.length < 2) continue;
+      final path = projection.projectPolyline([
         for (final point in line.points)
           GeoLocation(latitude: point.latitude, longitude: point.longitude),
-    ];
-    if (geographic.isEmpty) return;
-    final projected = GeoLocation.pointsToScreen(
-      points: geographic,
-      height: size.height,
-      width: size.width,
-      vp: viewport,
-    );
-    var offset = 0;
-    for (final line in lines) {
-      final count = line.points.length;
-      if (count < 2) {
-        offset += count;
-        continue;
-      }
-      final path = Path()..moveTo(projected[offset].x, projected[offset].y);
-      for (var i = 1; i < count; i++) {
-        path.lineTo(projected[offset + i].x, projected[offset + i].y);
-      }
-      offset += count;
+      ]);
       if (line.borderColor != null && line.borderStrokeWidth > 0) {
         _draw(
           canvas,

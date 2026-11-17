@@ -3,7 +3,6 @@ import 'package:maplibre_flutter/maplibre_flutter.dart';
 import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
-import 'package:maplibre_flutter/src/utils.dart';
 
 class PolygonEditController extends FeatureEditController {
   // config editor
@@ -231,9 +230,11 @@ class PolygonEditController extends FeatureEditController {
   int? _hitVertex(Offset pos, Size size) {
     final vp = _viewport;
     if (vp == null) return null;
-    final offsets = geosToOffsets(_editingVertices, size, vp);
+    final projection = MapLibrePathProjection(viewport: vp, size: size);
+    final offsets = _editingVertices.map(projection.projectPoint).toList();
     for (int i = 0; i < offsets.length; i++) {
       final scr = offsets[i];
+      if (scr == null) continue;
       if ((scr - pos).distance < _vertexHitR) return i;
     }
     return null;
@@ -242,10 +243,12 @@ class PolygonEditController extends FeatureEditController {
   int? _hitEdgeMidpoint(Offset pos, Size size) {
     final vp = _viewport;
     if (vp == null) return null;
-    final offsets = geosToOffsets(_editingVertices, size, vp);
+    final projection = MapLibrePathProjection(viewport: vp, size: size);
+    final offsets = _editingVertices.map(projection.projectPoint).toList();
     for (int i = 0; i < offsets.length; i++) {
       final a = offsets[i];
       final b = offsets[(i + 1) % offsets.length];
+      if (a == null || b == null) continue;
       final mid = (a + b) / 2;
       if ((mid - pos).distance < _midpointHitR) return i;
     }
@@ -256,7 +259,10 @@ class PolygonEditController extends FeatureEditController {
     final poly = _features?.polygons[id];
     final vp = _viewport;
     if (poly == null || vp == null) return false;
-    return pointInPolygon(pos, geosToOffsets(poly.points, size, vp));
+    return MapLibrePathProjection(
+      viewport: vp,
+      size: size,
+    ).projectPolygon(poly.points).contains(pos);
   }
 
   @override
