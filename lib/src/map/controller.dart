@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:maplibre_flutter/src/rust/api/dart_types.dart';
@@ -44,6 +45,7 @@ class MapLibreMapController {
   Future<void> _eventQueue = Future<void>.value();
   int _queuedOperations = 0;
   bool _running = false;
+  int _cameraOperation = 0;
   late final ValueNotifier<int?> _textureId;
 
   MapLibreMapController._({
@@ -165,6 +167,14 @@ class MapLibreMapController {
   /// Handle user events from the map widget
   Future<void> handleEvent(UserEvent event) {
     if (!_running) return Future<void>.value();
+    switch (event) {
+      case UserEvent_ButtonPressed() ||
+          UserEvent_DragStarted() ||
+          UserEvent_Drag():
+        cancelCameraMove();
+      default:
+        break;
+    }
 
     // Pointer motion only sends to the map thread. Send it immediately unless
     // a resize is in flight, when events must keep their order with the resize.
@@ -199,7 +209,49 @@ class MapLibreMapController {
 
   /// Set the map viewport
   Future<void> setViewport(MapViewport viewport) async {
-    if (!_running) return;
+    final widthMeters = viewport.xMax - viewport.xMin;
+    if (!_running || widthMeters <= 0 || _size.width == 0 || _size.height == 0) {
+      return;
+    }
+    final center = ScreenLocation(
+      x: _size.width / 2,
+      y: _size.height / 2,
+    ).toGeographical(
+      vp: viewport,
+      height: _size.height.toDouble(),
+      width: _size.width.toDouble(),
+    );
+    final zoom =
+        math.log((2 * math.pi * 6378137 * _size.width) / (512 * widthMeters)) /
+            math.ln2 +
+        1;
+    await moveCamera(center: center, zoom: zoom);
+  }
+
+  /// Moves to an absolute center and zoom using MapLibre Native's camera
+  /// animation. The returned value is false if another camera move replaced it.
+  Future<bool> moveCamera({
+    required GeoLocation center,
+    required double zoom,
+    Duration duration = const Duration(milliseconds: 300),
+  }) async {
+    if (!_running) return false;
+    final operation = ++_cameraOperation;
+    await handleEvent(
+      UserEvent.cameraMove(
+        center: center,
+        zoom: zoom,
+        durationMillis: duration.inMilliseconds.clamp(0, 0xffffffff).toInt(),
+      ),
+    );
+    if (duration > Duration.zero) await Future<void>.delayed(duration);
+    return _running && operation == _cameraOperation;
+  }
+
+  /// Marks an in-flight [moveCamera] as cancelled. Native gestures also cancel
+  /// the active camera transition on the render thread.
+  void cancelCameraMove() {
+    _cameraOperation++;
   }
 
   /// Resize the map

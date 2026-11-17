@@ -401,11 +401,13 @@ class _MapLibreMapWidgetState extends State<MapLibreMapWidget> {
       },
       onPointerSignal: (event) {
         if (event is PointerScrollEvent) {
-          const zoomSensitivity = 0.002;
-          final zoomFactor = math
-              .pow(1.0 - zoomSensitivity, -event.scrollDelta.dy)
-              .toDouble();
-          _sendZoomEvent(zoomFactor, event.localPosition);
+          GestureBinding.instance.pointerSignalResolver.register(event, (_) {
+            const zoomSensitivity = 0.002;
+            final zoomFactor = math
+                .pow(1.0 - zoomSensitivity, -event.scrollDelta.dy)
+                .toDouble();
+            _sendZoomEvent(zoomFactor, event.localPosition);
+          });
         }
       },
       onPointerMove: (event) {
@@ -568,7 +570,9 @@ class _MapLibreMapWidgetState extends State<MapLibreMapWidget> {
         final scale = _devicePixelRatio;
         widget.controller.handleEvent(
           UserEvent.rotate(
-            rotationDelta * 180 / math.pi,
+            // Flutter twist is clockwise on screen; increasing camera bearing
+            // rotates the map counterclockwise beneath the camera.
+            -rotationDelta * 180 / math.pi,
             Point2(x: focal.dx * scale, y: focal.dy * scale),
           ),
         );

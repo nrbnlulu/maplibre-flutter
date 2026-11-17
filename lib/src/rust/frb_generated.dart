@@ -67,6 +67,9 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.13.0';
 
   @override
+  String get nativeSymbolPrefix => 'maplibre_flutter_';
+
+  @override
   int get rustContentHash => 43915171;
 
   static const kDefaultExternalLibraryLoaderConfig =
@@ -1157,14 +1160,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MapInitConfig dco_decode_map_init_config(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 5)
-      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    if (arr.length != 7)
+      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
     return MapInitConfig(
       latlon: dco_decode_geo_location(arr[0]),
-      zoomLevel: dco_decode_u_32(arr[1]),
-      mapSize: dco_decode_map_size(arr[2]),
-      enableMultisampling: dco_decode_bool(arr[3]),
-      backgroundColor: dco_decode_map_libre_color(arr[4]),
+      zoomLevel: dco_decode_f_64(arr[1]),
+      minZoom: dco_decode_f_64(arr[2]),
+      maxZoom: dco_decode_f_64(arr[3]),
+      mapSize: dco_decode_map_size(arr[4]),
+      enableMultisampling: dco_decode_bool(arr[5]),
+      backgroundColor: dco_decode_map_libre_color(arr[6]),
     );
   }
 
@@ -1423,16 +1428,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           dco_decode_box_autoadd_point_2(raw[2]),
         );
       case 10:
+        return UserEvent_CameraMove(
+          center: dco_decode_box_autoadd_geo_location(raw[1]),
+          zoom: dco_decode_f_64(raw[2]),
+          durationMillis: dco_decode_u_32(raw[3]),
+        );
+      case 11:
         return UserEvent_ZoomImmediate(
           dco_decode_f_64(raw[1]),
           dco_decode_box_autoadd_point_2(raw[2]),
         );
-      case 11:
+      case 12:
         return UserEvent_Rotate(
           dco_decode_f_64(raw[1]),
           dco_decode_box_autoadd_point_2(raw[2]),
         );
-      case 12:
+      case 13:
         return UserEvent_Pitch(dco_decode_f_64(raw[1]));
       default:
         throw Exception("unreachable");
@@ -1701,13 +1712,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MapInitConfig sse_decode_map_init_config(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_latlon = sse_decode_geo_location(deserializer);
-    var var_zoomLevel = sse_decode_u_32(deserializer);
+    var var_zoomLevel = sse_decode_f_64(deserializer);
+    var var_minZoom = sse_decode_f_64(deserializer);
+    var var_maxZoom = sse_decode_f_64(deserializer);
     var var_mapSize = sse_decode_map_size(deserializer);
     var var_enableMultisampling = sse_decode_bool(deserializer);
     var var_backgroundColor = sse_decode_map_libre_color(deserializer);
     return MapInitConfig(
       latlon: var_latlon,
       zoomLevel: var_zoomLevel,
+      minZoom: var_minZoom,
+      maxZoom: var_maxZoom,
       mapSize: var_mapSize,
       enableMultisampling: var_enableMultisampling,
       backgroundColor: var_backgroundColor,
@@ -1955,14 +1970,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         var var_field1 = sse_decode_box_autoadd_point_2(deserializer);
         return UserEvent_ZoomAnimated(var_field0, var_field1);
       case 10:
-        var var_field0 = sse_decode_f_64(deserializer);
-        var var_field1 = sse_decode_box_autoadd_point_2(deserializer);
-        return UserEvent_ZoomImmediate(var_field0, var_field1);
+        var var_center = sse_decode_box_autoadd_geo_location(deserializer);
+        var var_zoom = sse_decode_f_64(deserializer);
+        var var_durationMillis = sse_decode_u_32(deserializer);
+        return UserEvent_CameraMove(
+          center: var_center,
+          zoom: var_zoom,
+          durationMillis: var_durationMillis,
+        );
       case 11:
         var var_field0 = sse_decode_f_64(deserializer);
         var var_field1 = sse_decode_box_autoadd_point_2(deserializer);
-        return UserEvent_Rotate(var_field0, var_field1);
+        return UserEvent_ZoomImmediate(var_field0, var_field1);
       case 12:
+        var var_field0 = sse_decode_f_64(deserializer);
+        var var_field1 = sse_decode_box_autoadd_point_2(deserializer);
+        return UserEvent_Rotate(var_field0, var_field1);
+      case 13:
         var var_field0 = sse_decode_f_64(deserializer);
         return UserEvent_Pitch(var_field0);
       default:
@@ -2242,7 +2266,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_geo_location(self.latlon, serializer);
-    sse_encode_u_32(self.zoomLevel, serializer);
+    sse_encode_f_64(self.zoomLevel, serializer);
+    sse_encode_f_64(self.minZoom, serializer);
+    sse_encode_f_64(self.maxZoom, serializer);
     sse_encode_map_size(self.mapSize, serializer);
     sse_encode_bool(self.enableMultisampling, serializer);
     sse_encode_map_libre_color(self.backgroundColor, serializer);
@@ -2464,16 +2490,25 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(9, serializer);
         sse_encode_f_64(field0, serializer);
         sse_encode_box_autoadd_point_2(field1, serializer);
-      case UserEvent_ZoomImmediate(field0: final field0, field1: final field1):
+      case UserEvent_CameraMove(
+        center: final center,
+        zoom: final zoom,
+        durationMillis: final durationMillis,
+      ):
         sse_encode_i_32(10, serializer);
-        sse_encode_f_64(field0, serializer);
-        sse_encode_box_autoadd_point_2(field1, serializer);
-      case UserEvent_Rotate(field0: final field0, field1: final field1):
+        sse_encode_box_autoadd_geo_location(center, serializer);
+        sse_encode_f_64(zoom, serializer);
+        sse_encode_u_32(durationMillis, serializer);
+      case UserEvent_ZoomImmediate(field0: final field0, field1: final field1):
         sse_encode_i_32(11, serializer);
         sse_encode_f_64(field0, serializer);
         sse_encode_box_autoadd_point_2(field1, serializer);
-      case UserEvent_Pitch(field0: final field0):
+      case UserEvent_Rotate(field0: final field0, field1: final field1):
         sse_encode_i_32(12, serializer);
+        sse_encode_f_64(field0, serializer);
+        sse_encode_box_autoadd_point_2(field1, serializer);
+      case UserEvent_Pitch(field0: final field0):
+        sse_encode_i_32(13, serializer);
         sse_encode_f_64(field0, serializer);
     }
   }

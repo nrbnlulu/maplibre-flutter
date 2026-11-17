@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Make touch rotation follow the direction of the two-finger twist.
+
 - Use `maplibre_flutter` for the package and native artifacts.
 - Expose MapLibre-prefixed Dart APIs for the standalone fork.
 - Expose the internal bridge module as `maplibre_api`.

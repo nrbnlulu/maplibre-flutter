@@ -150,7 +150,9 @@ pub struct MapSize {
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct MapInitConfig {
     pub latlon: GeoLocation,
-    pub zoom_level: u32,
+    pub zoom_level: f64,
+    pub min_zoom: f64,
+    pub max_zoom: f64,
     pub map_size: MapSize,
     /// Frames per second for the render loop (default: 30)
     /// Enable multisampling anti-aliasing
@@ -342,6 +344,12 @@ pub enum UserEvent {
     Scroll(f64, MouseEvent),
     /// Ease toward a zoom level around a point.
     ZoomAnimated(f64, Point2),
+    /// Ease to an absolute geographic camera position and zoom.
+    CameraMove {
+        center: GeoLocation,
+        zoom: f64,
+        duration_millis: u32,
+    },
     /// Apply a pinch-zoom delta immediately around a point.
     ZoomImmediate(f64, Point2),
     /// Rotate the map by this many degrees clockwise around a screen point.

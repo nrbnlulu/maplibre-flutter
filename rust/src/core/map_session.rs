@@ -36,7 +36,6 @@ pub struct MapSession {
     texture_id: Mutex<i64>,
     managed_layers: Mutex<HashMap<u32, ManagedLayer>>,
     next_layer_id: AtomicU32,
-    next_raster_id: AtomicU32,
     is_alive: AtomicBool,
 }
 
@@ -54,7 +53,9 @@ impl MapSession {
             MapThreadConfig {
                 center: config.latlon,
                 // Convert API zoom levels based on 256px tiles to MapLibre 512px tiles.
-                zoom: (f64::from(config.zoom_level) - 1.0).max(0.0),
+                zoom: config.zoom_level - 1.0,
+                min_zoom: config.min_zoom - 1.0,
+                max_zoom: config.max_zoom - 1.0,
                 size: config.map_size,
                 background: config.background_color,
                 cache_path: TILE_CACHE_PATH.read().as_ref().map(Into::into),
@@ -70,7 +71,6 @@ impl MapSession {
             texture_id: Mutex::new(texture_id),
             managed_layers: Mutex::new(HashMap::new()),
             next_layer_id: AtomicU32::new(0),
-            next_raster_id: AtomicU32::new(0),
             is_alive: AtomicBool::new(true),
         });
         SESSIONS.lock().insert(session_id, session.clone());
@@ -144,10 +144,9 @@ impl MapSession {
     }
 
     fn add_raster(&self, source: Value) -> anyhow::Result<()> {
-        let id = format!(
-            "raster-{}",
-            self.next_raster_id.fetch_add(1, Ordering::SeqCst)
-        );
+        // Raster tiles are the replaceable base layer; a stable id prevents
+        // stale tile sources accumulating when the URL changes.
+        let id = "raster-base".to_owned();
         self.thread
             .send(Command::AddRaster(RasterSpec { id, source }))
     }

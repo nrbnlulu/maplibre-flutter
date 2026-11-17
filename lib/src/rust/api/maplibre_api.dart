@@ -8,6 +8,7 @@ import 'dart_types.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`
+// These functions are ignored (category: IgnoreBecauseExplicitAttribute): `rendered_map_frames`
 
 /// Initialize the MapLibre Flutter plugin runtime.
 Future<void> maplibreFlutterInit({required PlatformInt64 ffiPtr}) =>
