@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:maplibre_flutter/maplibre_flutter.dart';
-import 'package:maplibre_flutter/src/utils.dart';
 
 /// Controller that manages the pending-vertex state for drawing a new polygon.
 ///
@@ -69,9 +68,11 @@ class PolygonDrawController extends ChangeNotifier {
   int? _hitVertex(Offset pos, Size size) {
     final vp = _viewport;
     if (vp == null) return null;
-    final offsets = geosToOffsets(_pendingVertices, size, vp);
+    final projection = MapLibrePathProjection(viewport: vp, size: size);
+    final offsets = _pendingVertices.map(projection.projectPoint).toList();
     for (int i = 0; i < offsets.length; i++) {
       final scr = offsets[i];
+      if (scr == null) continue;
       if ((scr - pos).distance < _vertexHitR) return i;
     }
     return null;

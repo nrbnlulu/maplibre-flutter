@@ -19,6 +19,34 @@ minimum/maximum zoom. Raster base URL changes replace the previous source;
 projected line overlays support opacity, casing, and dash patterns. Wheel zoom
 claims pointer signals so an enclosing scroll view does not scroll too.
 
+## Projected paths
+
+Use `MapLibrePathProjection` for custom geographic polygon and line overlays.
+It applies the rendered viewport's bearing and pitch and clips edges against the
+camera near plane before perspective division. Point-only projection methods
+return offscreen placeholders for hidden vertices and must not be used to join
+polygon or polyline paths.
+
+```dart
+final projection = MapLibrePathProjection(viewport: viewport, size: size);
+final polygonPath = projection.projectPolygon(vertices); // List<GeoLocation>
+canvas.drawPath(polygonPath, fillPaint);
+canvas.drawPath(polygonPath, borderPaint);
+final containsPointer = polygonPath.contains(pointerPosition);
+
+final linePath = projection.projectPolyline(track);
+canvas.drawPath(linePath, linePaint);
+```
+
+Polyline paths contain separate contours across hidden runs, preserving gaps
+instead of connecting visible endpoints through hidden geometry. Fully hidden
+polygons return an empty path. `projectPoint` returns null for hidden/invalid
+vertices, which is useful for editing handles. Rectangular viewport clipping
+still belongs to the caller (for example, `ClipRect` or `Canvas.clipRect`).
+Projection runs in Dart without initializing the native bridge. The built-in
+line and polygon editing painters use this API; no Rust binding regeneration is
+needed for this addition.
+
 ## Experimental independent bridge
 
 This branch pins the Rust and Dart runtimes to
