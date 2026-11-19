@@ -65,14 +65,11 @@ package's Dart API does not depend on an application-owned hub. FRB is resolved
 from the pinned remote Git dependency; the vendored Dart runtime and handwritten
 namespace script have been removed.
 
-Install the matching generator with:
-
-```sh
-cargo install --git https://github.com/shri-acha/flutter_rust_bridge.git --rev 334e4e3234c782b7c7bf221f1866440b6b7627ef --locked flutter_rust_bridge_codegen
-```
-
-`FRB_CODEGEN_BIN` can select an already-built matching generator for
-`go-task codegen`. Regenerate Rust and Dart together after native API changes.
+`go-task codegen` fetches and builds the generator from the same pinned FRB
+revision on the first run, then reuses the local binary under
+`.dart_tool/frb-codegen/`. Regenerate Rust and Dart together after native API
+changes. Normal builds use the checked-in bindings and do not install the
+generator.
 
 ## Architecture
 

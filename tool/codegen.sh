@@ -1,5 +1,6 @@
 #!/bin/sh
 set -eu
+codegen_bin=${1:?Run go-task codegen to install and select the pinned FRB generator}
 # FRB invokes Flutter and probes FVM; route Dart operations through rlutter.
 bridge_tools=$(mktemp -d)
 bridge_bootstrap=0
@@ -42,6 +43,6 @@ fi
 exec rlutter dart "$@"
 SH
 chmod +x "$bridge_tools/flutter" "$bridge_tools/fvm"
-PATH="$bridge_tools:$PATH" "${FRB_CODEGEN_BIN:-flutter_rust_bridge_codegen}" generate --no-auto-upgrade-dependency
+PATH="$bridge_tools:$PATH" "$codegen_bin" generate --no-auto-upgrade-dependency
 
 bridge_bootstrap=0

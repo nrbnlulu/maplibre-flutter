@@ -2,6 +2,8 @@ version: "3"
 
 vars:
     DART_BIN: "rlutter dart"
+    FRB_CODEGEN_REV: "334e4e3234c782b7c7bf221f1866440b6b7627ef"
+    FRB_CODEGEN_ROOT: ".dart_tool/frb-codegen/{{.FRB_CODEGEN_REV}}"
 
 tasks:
     # --- Rust tasks ---
@@ -78,10 +80,18 @@ tasks:
         cmds:
             - "{{.DART_BIN}} pub get"
 
+    install-frb-codegen:
+        desc: Install the FRB generator matching the pinned Rust and Dart runtimes
+        status:
+            - 'test -x "{{.FRB_CODEGEN_ROOT}}/bin/flutter_rust_bridge_codegen"'
+        cmds:
+            - cargo install --locked --git https://github.com/shri-acha/flutter_rust_bridge.git --rev {{.FRB_CODEGEN_REV}} --root "{{.FRB_CODEGEN_ROOT}}" flutter_rust_bridge_codegen
+
     codegen:
         desc: Generate standalone MapLibre FRB bindings and Dart models
+        deps: [install-frb-codegen]
         cmds:
-            - sh tool/codegen.sh
+            - sh tool/codegen.sh "{{.FRB_CODEGEN_ROOT}}/bin/flutter_rust_bridge_codegen"
             - rlutter dart run build_runner build
             - rlutter dart format lib/src/rust
 
