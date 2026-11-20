@@ -88,9 +88,10 @@ GPU dependencies required by the Rust shell. Run codegen in that same native
 build environment.
 
 Use `rlutter dart pub get`, then run it in `example` to prepare that runner's
-SDK. Run `go-task mln-core` from this checkout to prepare the native core cache,
-then `go-task run` to launch the Linux example. The cache is local to this
-checkout; Android requires target-specific native artifacts and SDK setup.
+SDK. Run `go-task run` to launch the Linux example. The `maplibre_native`
+Cargo build script downloads and verifies the pinned core for Linux x86_64 or
+Android ARM64. Set `MLN_CORE_CACHE_DIR` to an absolute path to share the cache
+across builds. Android still requires the NDK and target-built libcurl.
 
 Run `go-task codegen` after changing the public bridge API. It uses FRB 2.13.0,
 regenerates the standalone bindings and Freezed models, and preserves dependency
