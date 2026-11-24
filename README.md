@@ -50,10 +50,9 @@ needed for this addition.
 ## Experimental independent bridge
 
 This branch pins the Rust and Dart runtimes to
-[shri-acha/flutter_rust_bridge, revision 334e4e3](https://github.com/shri-acha/flutter_rust_bridge/tree/334e4e3234c782b7c7bf221f1866440b6b7627ef),
-version `2.13.0`. This branch backports the prefix patch to the 2.13
-release so applications can retain existing 2.13 Shalom and SIP bindings with
-strict codegen-version checks enabled. Its supported `native_symbol_prefix` configuration sets
+[shri-acha/flutter_rust_bridge, revision d1c1957a](https://github.com/shri-acha/flutter_rust_bridge/tree/d1c1957a045825434c86ef6bc936c3299431c5fb),
+version `2.14.0-beta.2`. Keep strict codegen-version and content-hash checks enabled.
+The `native_symbol_prefix` configuration sets
 `maplibre_flutter_` on this package's hash, dispatchers, and callback delivery.
 Another FRB plugin can own its bridge in the same rlutter executable when it
 uses a different prefix and a compatible shared Rust/Dart runtime. Register each
@@ -68,7 +67,7 @@ namespace script have been removed.
 Install the matching generator with:
 
 ```sh
-cargo install --git https://github.com/shri-acha/flutter_rust_bridge.git --rev 334e4e3234c782b7c7bf221f1866440b6b7627ef --locked flutter_rust_bridge_codegen
+cargo install --git https://github.com/shri-acha/flutter_rust_bridge --rev d1c1957a045825434c86ef6bc936c3299431c5fb --locked flutter_rust_bridge_codegen
 ```
 
 `FRB_CODEGEN_BIN` can select an already-built matching generator for
@@ -93,7 +92,7 @@ Cargo build script downloads and verifies the pinned core for Linux x86_64 or
 Android ARM64. Set `MLN_CORE_CACHE_DIR` to an absolute path to share the cache
 across builds. Android still requires the NDK and target-built libcurl.
 
-Run `go-task codegen` after changing the public bridge API. It uses FRB 2.13.0,
+Run `go-task codegen` after changing the public bridge API. It uses FRB 2.14.0-beta.2,
 regenerates the standalone bindings and Freezed models, and preserves dependency
 metadata. Run `rlutter dart analyze lib example/lib` to check Dart consumers.
 The codegen Flutter SDK probe defaults to rlutter's cached Flutter SDK; set

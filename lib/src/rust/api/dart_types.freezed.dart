@@ -201,7 +201,7 @@ return widgetLayer();case _:
 
 class LayerConfig_Osm extends LayerConfig {
   const LayerConfig_Osm(): super._();
-
+  
 
 
 
@@ -233,7 +233,7 @@ String toString() {
 
 class LayerConfig_RasterTiles extends LayerConfig {
   const LayerConfig_RasterTiles({required this.urlTemplate, this.attribution}): super._();
-
+  
 
  final  String urlTemplate;
  final  String? attribution;
@@ -303,7 +303,7 @@ as String?,
 
 class LayerConfig_VectorTiles extends LayerConfig {
   const LayerConfig_VectorTiles({required this.urlTemplate, required this.styleJson, this.attribution}): super._();
-
+  
 
  final  String urlTemplate;
  final  String styleJson;
@@ -375,7 +375,7 @@ as String?,
 
 class LayerConfig_PolygonLayer extends LayerConfig {
   const LayerConfig_PolygonLayer({required  List<Polygon> features}): _features = features,super._();
-
+  
 
 /// Stores the Polygon features to be rendered
  final  List<Polygon> _features;
@@ -451,7 +451,7 @@ as List<Polygon>,
 
 class LayerConfig_PointLayer extends LayerConfig {
   const LayerConfig_PointLayer({required  List<Point> features}): _features = features,super._();
-
+  
 
 /// Stores the Point features to be rendered
  final  List<Point> _features;
@@ -527,7 +527,7 @@ as List<Point>,
 
 class LayerConfig_WidgetLayer extends LayerConfig {
   const LayerConfig_WidgetLayer(): super._();
-
+  
 
 
 
@@ -791,7 +791,7 @@ return pitch(_that.field0);case _:
 
 class UserEvent_ButtonPressed extends UserEvent {
   const UserEvent_ButtonPressed(this.field0, this.field1): super._();
-
+  
 
  final  MouseButton field0;
  final  MouseEvent field1;
@@ -861,7 +861,7 @@ as MouseEvent,
 
 class UserEvent_ButtonReleased extends UserEvent {
   const UserEvent_ButtonReleased(this.field0, this.field1): super._();
-
+  
 
  final  MouseButton field0;
  final  MouseEvent field1;
@@ -931,7 +931,7 @@ as MouseEvent,
 
 class UserEvent_Click extends UserEvent {
   const UserEvent_Click(this.field0, this.field1): super._();
-
+  
 
  final  MouseButton field0;
  final  MouseEvent field1;
@@ -1001,7 +1001,7 @@ as MouseEvent,
 
 class UserEvent_DoubleClick extends UserEvent {
   const UserEvent_DoubleClick(this.field0, this.field1): super._();
-
+  
 
  final  MouseButton field0;
  final  MouseEvent field1;
@@ -1071,7 +1071,7 @@ as MouseEvent,
 
 class UserEvent_PointerMoved extends UserEvent {
   const UserEvent_PointerMoved(this.field0): super._();
-
+  
 
  final  MouseEvent field0;
 
@@ -1139,7 +1139,7 @@ as MouseEvent,
 
 class UserEvent_DragStarted extends UserEvent {
   const UserEvent_DragStarted(this.field0, this.field1): super._();
-
+  
 
  final  MouseButton field0;
  final  MouseEvent field1;
@@ -1209,7 +1209,7 @@ as MouseEvent,
 
 class UserEvent_Drag extends UserEvent {
   const UserEvent_Drag(this.field0, this.field1, this.field2): super._();
-
+  
 
  final  MouseButton field0;
  final  Vector2 field1;
@@ -1281,7 +1281,7 @@ as MouseEvent,
 
 class UserEvent_DragEnded extends UserEvent {
   const UserEvent_DragEnded(this.field0, this.field1): super._();
-
+  
 
  final  MouseButton field0;
  final  MouseEvent field1;
@@ -1351,7 +1351,7 @@ as MouseEvent,
 
 class UserEvent_Scroll extends UserEvent {
   const UserEvent_Scroll(this.field0, this.field1): super._();
-
+  
 
  final  double field0;
  final  MouseEvent field1;
@@ -1421,7 +1421,7 @@ as MouseEvent,
 
 class UserEvent_ZoomAnimated extends UserEvent {
   const UserEvent_ZoomAnimated(this.field0, this.field1): super._();
-
+  
 
  final  double field0;
  final  Point2 field1;
@@ -1491,7 +1491,7 @@ as Point2,
 
 class UserEvent_CameraMove extends UserEvent {
   const UserEvent_CameraMove({required this.center, required this.zoom, required this.durationMillis}): super._();
-
+  
 
  final  GeoLocation center;
  final  double zoom;
@@ -1563,7 +1563,7 @@ as int,
 
 class UserEvent_ZoomImmediate extends UserEvent {
   const UserEvent_ZoomImmediate(this.field0, this.field1): super._();
-
+  
 
  final  double field0;
  final  Point2 field1;
@@ -1633,7 +1633,7 @@ as Point2,
 
 class UserEvent_Rotate extends UserEvent {
   const UserEvent_Rotate(this.field0, this.field1): super._();
-
+  
 
  final  double field0;
  final  Point2 field1;
@@ -1703,7 +1703,7 @@ as Point2,
 
 class UserEvent_Pitch extends UserEvent {
   const UserEvent_Pitch(this.field0): super._();
-
+  
 
  final  double field0;
 

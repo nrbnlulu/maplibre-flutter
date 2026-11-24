@@ -127,11 +127,11 @@ packages:
     dependency: transitive
     description:
       path: frb_dart
-      ref: "334e4e3234c782b7c7bf221f1866440b6b7627ef"
-      resolved-ref: "334e4e3234c782b7c7bf221f1866440b6b7627ef"
-      url: "https://github.com/shri-acha/flutter_rust_bridge.git"
+      ref: d1c1957a045825434c86ef6bc936c3299431c5fb
+      resolved-ref: d1c1957a045825434c86ef6bc936c3299431c5fb
+      url: "https://github.com/shri-acha/flutter_rust_bridge"
     source: git
-    version: "2.13.0"
+    version: "2.14.0-beta.2"
   flutter_test:
     dependency: "direct dev"
     description: flutter
