@@ -2,3 +2,4 @@ rust_input: crate::api
 rust_root: rust/
 dart_output: lib/src/rust
 native_symbol_prefix: maplibre_flutter_
+auto_upgrade_dependency: false

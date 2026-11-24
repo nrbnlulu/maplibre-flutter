@@ -3,15 +3,6 @@
 version = 4
 
 [[package]]
-name = "addr2line"
-version = "0.25.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1b5d307320b3181d6d7954e663bd7c774a838b8220fe0593c86d9fb09f498b4b"
-dependencies = [
- "gimli",
-]
-
-[[package]]
 name = "adler2"
 version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -52,7 +43,6 @@ checksum = "449e356a4864c017286dbbec0e12767ea07efba29e3b7d984194c2a7ff3c4550"
 dependencies = [
  "anyhow",
  "atomic",
- "backtrace",
 ]
 
 [[package]]
@@ -240,21 +230,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e7178fe5f7d460b13895ebb9dcb28a3a6216d2df2574a0806cb51b555d297f38"
 dependencies = [
  "arrayvec",
-]
-
-[[package]]
-name = "backtrace"
-version = "0.3.76"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bb531853791a215d7c62a30daf0dde835f381ab5de4589cfe7c649d2cbe92bd6"
-dependencies = [
- "addr2line",
- "cfg-if",
- "libc",
- "miniz_oxide 0.8.9",
- "object",
- "rustc-demangle",
- "windows-link",
 ]
 
 [[package]]
@@ -894,8 +869,8 @@ dependencies = [
 
 [[package]]
 name = "flutter_rust_bridge"
-version = "2.13.0"
-source = "git+https://github.com/shri-acha/flutter_rust_bridge.git?rev=334e4e3234c782b7c7bf221f1866440b6b7627ef#334e4e3234c782b7c7bf221f1866440b6b7627ef"
+version = "2.14.0-beta.2"
+source = "git+https://github.com/shri-acha/flutter_rust_bridge?rev=d1c1957a045825434c86ef6bc936c3299431c5fb#d1c1957a045825434c86ef6bc936c3299431c5fb"
 dependencies = [
  "allo-isolate",
  "android_logger",
@@ -922,8 +897,8 @@ dependencies = [
 
 [[package]]
 name = "flutter_rust_bridge_macros"
-version = "2.13.0"
-source = "git+https://github.com/shri-acha/flutter_rust_bridge.git?rev=334e4e3234c782b7c7bf221f1866440b6b7627ef#334e4e3234c782b7c7bf221f1866440b6b7627ef"
+version = "2.14.0-beta.2"
+source = "git+https://github.com/shri-acha/flutter_rust_bridge?rev=d1c1957a045825434c86ef6bc936c3299431c5fb#d1c1957a045825434c86ef6bc936c3299431c5fb"
 dependencies = [
  "hex",
  "md-5",
@@ -1158,12 +1133,6 @@ dependencies = [
  "color_quant",
  "weezl",
 ]
-
-[[package]]
-name = "gimli"
-version = "0.32.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e629b9b98ef3dd8afe6ca2bd0f89306cec16d43d907889945bc5d6687f2f13c7"
 
 [[package]]
 name = "glob"
@@ -2116,15 +2085,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "object"
-version = "0.37.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ff76201f031d8863c38aa7f905eca4f53abbfa15f609db4277d44cd8938f33fe"
-dependencies = [
- "memchr",
-]
-
-[[package]]
 name = "once_cell"
 version = "1.21.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2834,12 +2794,6 @@ dependencies = [
  "serde",
  "smallvec",
 ]
-
-[[package]]
-name = "rustc-demangle"
-version = "0.1.28"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b74b56ffa8bb2830709a538c2cbcae9aa062db0d2a42563bfb09bdaae44020eb"
 
 [[package]]
 name = "rustc-hash"
