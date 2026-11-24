@@ -1,0 +1,17 @@
+// Flutter's FFI plugin loader expects an Android library module.
+// rlutter builds and stages the native MapLibre code separately.
+apply plugin: 'com.android.library'
+
+android {
+    namespace 'com.flutter_rust_bridge.maplibre_flutter'
+    compileSdk 36
+
+    defaultConfig {
+        minSdk 24
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
