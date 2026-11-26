@@ -1,5 +1,6 @@
-import 'package:maplibre_flutter/maplibre_flutter.dart';
 import 'package:latlong2/latlong.dart';
+
+import '../rust/api/dart_types.dart';
 
 extension MapLibreCoordinateExt on LatLng {
   GeoLocation toMapLibre() {

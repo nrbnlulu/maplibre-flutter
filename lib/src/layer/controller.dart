@@ -79,10 +79,21 @@ class LayerController extends ChangeNotifier {
     }
   }
 
-  /// True when any registered editor is performing a drag gesture and the map
-  /// should not process pointer-move events as pans.
+  final _panSuppressions = <Object>{};
+
+  /// Suppresses map panning until the returned callback is called. Each caller
+  /// releases only its own suppression; other editors may still be active.
+  VoidCallback acquirePanSuppression() {
+    final token = Object();
+    _panSuppressions.add(token);
+    return () => _panSuppressions.remove(token);
+  }
+
+  /// Whether the map should ignore pointer-move events that would pan it.
   bool get shouldSuppressPan =>
-      _drawSuppressPan || _editors.values.any((e) => e.shouldSuppressPan);
+      _drawSuppressPan ||
+      _panSuppressions.isNotEmpty ||
+      _editors.values.any((e) => e.shouldSuppressPan);
 
   LayerController({required this.sessionId, required this.layers});
 
