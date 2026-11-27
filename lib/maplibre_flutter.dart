@@ -40,6 +40,8 @@ export 'package:maplibre_flutter/src/overlay/polygon/overlay_polygon.dart';
 export 'package:maplibre_flutter/src/layer/controller.dart';
 export 'package:maplibre_flutter/src/layer/line_layer.dart';
 export 'package:maplibre_flutter/src/layer/marker_layer.dart';
+export 'package:maplibre_flutter/src/layer/marker_cluster_layer.dart'
+    show MapLibreMarkerCluster, MapLibreMarkerClusterLayer;
 export 'package:maplibre_flutter/src/layer/polygon_layer.dart';
 export 'package:maplibre_flutter/src/projection/path_projection.dart'
     show MapLibrePathProjection;
