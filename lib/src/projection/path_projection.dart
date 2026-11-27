@@ -3,7 +3,21 @@ import 'dart:ui';
 
 import '../rust/api/dart_types.dart' show GeoLocation, MapViewport;
 
-const _mercatorRadius = 6378137.0;
+const mercatorRadius = 6378137.0;
+
+Offset toMercator(GeoLocation point) => Offset(
+  point.longitude * math.pi / 180 * mercatorRadius,
+  math.log(math.tan(math.pi / 4 + point.latitude * math.pi / 360)) *
+      mercatorRadius,
+);
+
+GeoLocation fromMercator(Offset point) => GeoLocation(
+  latitude:
+      (2 * math.atan(math.exp(point.dy / mercatorRadius)) - math.pi / 2) *
+      180 /
+      math.pi,
+  longitude: point.dx / mercatorRadius * 180 / math.pi,
+);
 
 /// Projects geographic paths onto a rendered MapLibre viewport.
 ///
@@ -50,12 +64,9 @@ class MapLibrePathProjection {
         point.latitude.abs() >= 90) {
       return null;
     }
-    final mx = point.longitude * math.pi / 180 * _mercatorRadius;
-    final my =
-        math.log(math.tan(math.pi / 4 + point.latitude * math.pi / 360)) *
-        _mercatorRadius;
-    final east = (mx - _centerX) * _scale;
-    final south = -(my - _centerY) * _scale;
+    final meters = toMercator(point);
+    final east = (meters.dx - _centerX) * _scale;
+    final south = -(meters.dy - _centerY) * _scale;
     final x = east * _cosBearing + south * _sinBearing;
     final y = -east * _sinBearing + south * _cosBearing;
     final depth = _distance - y * _sinPitch;
@@ -85,6 +96,30 @@ class MapLibrePathProjection {
   Offset? projectPoint(GeoLocation point) {
     final vertex = _cameraVertex(point);
     return vertex == null || vertex.depth < _nearDepth ? null : _screen(vertex);
+  }
+
+  /// Ground point under a viewport pixel. Points above the horizon are
+  /// clamped just below it, consistently with native pointer projection.
+  GeoLocation? unprojectPoint(Offset point) {
+    if (!_valid || !point.isFinite) return null;
+    return fromMercator(
+      Offset(_centerX, _centerY) + groundOffset(point) / _scale,
+    );
+  }
+
+  // The meters from camera center at unit scale (one meter per pixel).
+  Offset groundOffset(Offset point) {
+    final u = point.dx - size.width / 2;
+    var v = point.dy - size.height / 2;
+    if (_sinPitch > 1e-9) {
+      v = math.max(v, -_distance * _cosPitch / _sinPitch * 0.999);
+    }
+    final y = v * _distance / (_distance * _cosPitch + v * _sinPitch);
+    final x = u * (_distance - y * _sinPitch) / _distance;
+    return Offset(
+      x * _cosBearing - y * _sinBearing,
+      -x * _sinBearing - y * _cosBearing,
+    );
   }
 
   /// Returns a closed path for a polygon ring, suitable for fill, stroke and

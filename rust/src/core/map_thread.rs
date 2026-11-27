@@ -557,7 +557,10 @@ impl MapState {
                 self.stop_native_animation();
                 let zoom = (zoom - 1.0).clamp(self.min_zoom, self.max_zoom);
                 if duration_millis == 0 {
+                    let (bearing, pitch) = (self.camera.bearing, self.camera.pitch);
                     self.camera = Camera::new(center, zoom);
+                    self.camera.bearing = bearing;
+                    self.camera.pitch = pitch;
                     self.apply_camera();
                     return;
                 }

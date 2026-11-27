@@ -30,6 +30,7 @@ export 'package:maplibre_flutter/src/rust/api/dart_types.dart'
 export 'package:maplibre_flutter/src/map/widget.dart';
 export 'package:maplibre_flutter/src/extensions/color.dart';
 export 'package:maplibre_flutter/src/map/controller.dart';
+export 'package:maplibre_flutter/src/map/camera.dart';
 export 'package:maplibre_flutter/src/layer/overlay/overlay.dart';
 export 'package:maplibre_flutter/src/layer/feature/feature.dart';
 export 'package:maplibre_flutter/src/overlay/widget/overlay_widget.dart';
@@ -40,7 +41,8 @@ export 'package:maplibre_flutter/src/layer/controller.dart';
 export 'package:maplibre_flutter/src/layer/line_layer.dart';
 export 'package:maplibre_flutter/src/layer/marker_layer.dart';
 export 'package:maplibre_flutter/src/layer/polygon_layer.dart';
-export 'package:maplibre_flutter/src/projection/path_projection.dart';
+export 'package:maplibre_flutter/src/projection/path_projection.dart'
+    show MapLibrePathProjection;
 export 'package:maplibre_flutter/src/projection/polygon_geometry.dart'
     show polygonCentroid;
 export 'package:maplibre_flutter/src/widgets/polygon_overlay.dart';
