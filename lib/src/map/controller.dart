@@ -1,13 +1,15 @@
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart' show EdgeInsets, Size;
 import 'package:maplibre_flutter/src/rust/api/dart_types.dart';
 import 'package:maplibre_flutter/src/rust/api/maplibre_api.dart' as rlib;
 import 'package:maplibre_flutter/src/layer/controller.dart';
 import 'package:logging/logging.dart';
 
 import "package:rxdart/rxdart.dart" as rx;
+
+import 'camera.dart';
 
 final _log = Logger('MapLibreMapController');
 
@@ -38,8 +40,7 @@ class MapLibreMapController {
 
   final int sessionId;
   final rx.BehaviorSubject<MapLibreMapState> _stateBroadcast;
-  final rx.BehaviorSubject<MapViewport> _renderedViewportBroadcast =
-      rx.BehaviorSubject<MapViewport>();
+  final _renderedCamera = rx.BehaviorSubject<MapLibreCamera>();
   StreamSubscription<RenderedMapFrame>? _renderedFrameSub;
   BigInt _lastRenderedFrameSequence = BigInt.zero;
   Future<void> _eventQueue = Future<void>.value();
@@ -69,7 +70,13 @@ class MapLibreMapController {
 
   /// Viewports that produced completed native texture frames.
   Stream<MapViewport> get renderedViewportStream =>
-      _renderedViewportBroadcast.stream;
+      renderedCameraStream.map((camera) => camera.viewport);
+
+  /// Camera geometry paired with the texture size at render time.
+  Stream<MapLibreCamera> get renderedCameraStream => _renderedCamera.stream;
+
+  /// The latest completed frame, or null before the first frame is rendered.
+  MapLibreCamera? get renderedCamera => _renderedCamera.valueOrNull;
 
   /// Texture ID for rendering (null if not ready)
   int? get textureId => _textureId.value;
@@ -135,7 +142,15 @@ class MapLibreMapController {
             }
             _lastRenderedFrameSequence = frame.sequence;
             layerController.updateViewport(frame.viewport, frame.mapSize);
-            _renderedViewportBroadcast.add(frame.viewport);
+            _renderedCamera.add(
+              MapLibreCamera(
+                viewport: frame.viewport,
+                size: Size(
+                  frame.mapSize.width.toDouble(),
+                  frame.mapSize.height.toDouble(),
+                ),
+              ),
+            );
           },
           onError: (Object error, StackTrace stackTrace) {
             if (_running) {
@@ -210,22 +225,46 @@ class MapLibreMapController {
   /// Set the map viewport
   Future<void> setViewport(MapViewport viewport) async {
     final widthMeters = viewport.xMax - viewport.xMin;
-    if (!_running || widthMeters <= 0 || _size.width == 0 || _size.height == 0) {
+    if (!_running ||
+        widthMeters <= 0 ||
+        _size.width == 0 ||
+        _size.height == 0) {
       return;
     }
-    final center = ScreenLocation(
-      x: _size.width / 2,
-      y: _size.height / 2,
-    ).toGeographical(
-      vp: viewport,
-      height: _size.height.toDouble(),
-      width: _size.width.toDouble(),
+    final camera = MapLibreCamera(
+      viewport: viewport,
+      size: Size(_size.width.toDouble(), _size.height.toDouble()),
     );
-    final zoom =
-        math.log((2 * math.pi * 6378137 * _size.width) / (512 * widthMeters)) /
-            math.ln2 +
-        1;
-    await moveCamera(center: center, zoom: zoom);
+    await moveCamera(center: camera.center, zoom: camera.zoom);
+  }
+
+  /// Animates to a bounds fit using the latest completed frame.
+  /// [padding] is in physical pixels. Returns false if no frame is available,
+  /// the input is invalid, or the camera move was superseded.
+  Future<bool> fitBounds(
+    MapLibreBounds bounds, {
+    EdgeInsets padding = EdgeInsets.zero,
+    GeoLocation? center,
+    double? maxZoom,
+    Duration duration = const Duration(milliseconds: 300),
+  }) async {
+    if (!_running || (maxZoom != null && !maxZoom.isFinite)) return false;
+    final target = renderedCamera?.cameraForBounds(
+      bounds,
+      padding: padding,
+      center: center,
+      minZoom: config.minZoom,
+      maxZoom: (maxZoom ?? config.maxZoom).clamp(
+        config.minZoom,
+        config.maxZoom,
+      ),
+    );
+    if (target == null) return false;
+    return moveCamera(
+      center: target.center,
+      zoom: target.zoom,
+      duration: duration,
+    );
   }
 
   /// Moves to an absolute center and zoom using MapLibre Native's camera
@@ -291,7 +330,7 @@ class MapLibreMapController {
     try {
       await rlib.destroySession(sessionId: sessionId);
       await _renderedFrameSub?.cancel();
-      await _renderedViewportBroadcast.close();
+      await _renderedCamera.close();
       await _stateBroadcast.close();
     } catch (e) {
       _log.severe('Error disposing MapLibre map controller', e);

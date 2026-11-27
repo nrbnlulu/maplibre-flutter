@@ -19,6 +19,25 @@ minimum/maximum zoom. Raster base URL changes replace the previous source;
 projected line overlays support opacity, casing, and dash patterns. Wheel zoom
 claims pointer signals so an enclosing scroll view does not scroll too.
 
+## Rendered camera and bounds fitting
+
+Read `controller.renderedCamera` or listen to `renderedCameraStream` for
+viewport geometry paired with the size of the completed texture frame. The
+snapshot provides `center`, `zoom`, `visibleBounds`, `project`, and `unproject`.
+Size, projection coordinates, and `fitBounds` padding use physical pixels;
+`zoomForViewportWidth` can also report zoom using a logical layout width.
+
+```dart
+await controller.fitBounds(
+  const MapLibreBounds(south: 30, west: 33, north: 33, east: 36),
+  padding: const EdgeInsets.all(48),
+  maxZoom: 16,
+);
+```
+
+Call after the first completed frame. The fit keeps the frame's bearing and
+pitch, and can place an optional geographic target at the padded area's center.
+
 ## Projected paths
 
 Use `MapLibrePathProjection` for custom geographic polygon and line overlays.
