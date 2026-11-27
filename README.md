@@ -38,6 +38,15 @@ await controller.fitBounds(
 Call after the first completed frame. The fit keeps the frame's bearing and
 pitch, and can place an optional geographic target at the padded area's center.
 
+`MapLibreMarkerClusterLayer<T>` groups projected widget markers while keeping
+the caller's item identities. Supply a `clusterBuilder` for grouped items and
+use `fitBounds` with the cluster center if a tap should expand the group.
+
+For form-owned geometry, import `package:maplibre_flutter/map_editing.dart`.
+`MapLibrePolygonDraftEditor.edit()` supplies vertex and midpoint handles to
+`MapLibreDragMarkers`; canceling a drag restores the pre-drag draft. The caller
+decides when to validate and save the draft.
+
 ## Projected paths
 
 Use `MapLibrePathProjection` for custom geographic polygon and line overlays.
