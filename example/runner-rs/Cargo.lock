@@ -2108,7 +2108,7 @@ dependencies = [
 [[package]]
 name = "maplibre_native"
 version = "0.10.0"
-source = "git+https://github.com/shri-acha/maplibre-native-rs?rev=79515202477dae110532963e6d77e23aafdf0ae9#79515202477dae110532963e6d77e23aafdf0ae9"
+source = "git+https://github.com/shri-acha/maplibre-native-rs?rev=527586a7622461ed620763647346dc099eaa13a7#527586a7622461ed620763647346dc099eaa13a7"
 dependencies = [
  "cmake",
  "cxx",
@@ -4599,7 +4599,7 @@ dependencies = [
 [[package]]
 name = "webgpu-shim"
 version = "0.1.2"
-source = "git+https://github.com/shri-acha/maplibre-native-rs?rev=79515202477dae110532963e6d77e23aafdf0ae9#79515202477dae110532963e6d77e23aafdf0ae9"
+source = "git+https://github.com/shri-acha/maplibre-native-rs?rev=527586a7622461ed620763647346dc099eaa13a7#527586a7622461ed620763647346dc099eaa13a7"
 dependencies = [
  "bindgen",
  "cxx",
