@@ -21,7 +21,7 @@ wgpu = { git = "https://github.com/gfx-rs/wgpu.git", rev = "014d9e84813a2946febf
 
 # MapLibre Native renders on a dedicated thread (the renderer is !Send) directly on
 # the Rust shell's wgpu device. Use the bridge revision with automatic core downloads.
-maplibre_native = { git = "https://github.com/shri-acha/maplibre-native-rs", rev = "527586a7622461ed620763647346dc099eaa13a7", default-features = false, features = ["wgpu", "json", "geojson", "log"] }
+maplibre_native = { git = "https://github.com/shri-acha/maplibre-native-rs", rev = "3d2e28a63dbf386017a41a882c8d5e4339b0cb30", default-features = false, features = ["wgpu", "json", "geojson", "log"] }
 
 tokio = { version = "1.0", features = ["full"] }
 futures = "0.3"
